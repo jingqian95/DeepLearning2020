@@ -1,6 +1,6 @@
 project_name: dl2020  # also the folder name of the dataset that under data_path folder
-train_set: train2017
-val_set: val2017
+train_set: scene_index_106_127
+val_set: scene_index_128_133
 num_gpus: 2
 
 

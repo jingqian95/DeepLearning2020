@@ -114,7 +114,7 @@ def train(opt):
                                       extra_info = True
                                       )
 
-    training_generator = torch.utils.data.DataLoader(training_set, **training_params)
+    training_generator = DataLoader(training_set, **training_params)
 
 
     val_set = LabeledDataset(image_folder = os.path.join(opt.data_path, params.project_name),
@@ -124,7 +124,7 @@ def train(opt):
                                       extra_info = True
                                       )
 
-    val_generator = torch.utils.data.DataLoader(val_set, **val_params)
+    val_generator = DataLoader(val_set, **val_params)
 
 
 
@@ -202,19 +202,11 @@ def train(opt):
         use_sync_bn = False
 
 
-
+    # Initiate Log writer
     writer = SummaryWriter(opt.log_path + f'/{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}/')
-
-    ####################################################################################################################################################################################################################################################################
-    ####################################################################################################################################################################################################################################################################
-    ####################################################################################################################################################################################################################################################################
-    ####################################################################################################################################################################################################################################################################
-    ####################################################################################################################################################################################################################################################################
-    ####################################################################################################################################################################################################################################################################
 
 
     # warp the model with loss function, to reduce the memory usage on gpu0 and speedup
-
     class ModelWithLoss(nn.Module):
         def __init__(self, model, debug=False):
             super().__init__()
@@ -232,6 +224,7 @@ def train(opt):
             return cls_loss, reg_loss
 
     model = ModelWithLoss(model, debug=opt.debug)
+
 
     if params.num_gpus > 0:
         model = model.cuda()
@@ -261,6 +254,7 @@ def train(opt):
             if epoch < last_epoch:
                 continue
 
+
             epoch_loss = []
             progress_bar = tqdm(training_generator)
             for iter, data in enumerate(progress_bar):
@@ -268,8 +262,10 @@ def train(opt):
                     progress_bar.update()
                     continue
                 try:
-                    imgs = data['img']
-                    annot = data['annot']
+                    # imgs = data['img']
+                    # annot = data['annot']
+
+                    sample_cat, sample, target, road_image, extra = data
 
                     if params.num_gpus == 1:
                         # if only one gpu, just send it to cuda:0
@@ -278,7 +274,8 @@ def train(opt):
                         annot = annot.cuda()
 
                     optimizer.zero_grad()
-                    cls_loss, reg_loss = model(imgs, annot, obj_list=params.obj_list)
+                    # cls_loss, reg_loss = model(imgs, annot, obj_list=params.obj_list)
+                    cls_loss, reg_loss = model(sample_cat, target, obj_list=params.obj_list)
                     cls_loss = cls_loss.mean()
                     reg_loss = reg_loss.mean()
 
