@@ -107,10 +107,17 @@ class LabeledDataset(torch.utils.data.Dataset):
         sample_path = os.path.join(self.image_folder, f'scene_{scene_id}', f'sample_{sample_id}') 
 
         images = []
+        image_cat = None
         for image_name in image_names:
             image_path = os.path.join(sample_path, image_name)
             image = Image.open(image_path)
-            images.append(self.transform(image))
+            image = self.transform(image)
+            if image_cat == None:
+                image_cat = image
+            else:
+                image_cat = torch.cat((image_cat, image), 1)
+            images.append(image)
+            
         image_tensor = torch.stack(images)
 
         data_entries = self.annotation_dataframe[(self.annotation_dataframe['scene'] == scene_id) & (self.annotation_dataframe['sample'] == sample_id)]
@@ -136,9 +143,9 @@ class LabeledDataset(torch.utils.data.Dataset):
             extra['ego_image'] = ego_image
             extra['lane_image'] = lane_image
 
-            return image_tensor, target, road_image, extra
+            return image_cat, image_tensor, target, road_image, extra
         
         else:
-            return image_tensor, target, road_image
+            return image_cat, image_tensor, target, road_image
 
     
