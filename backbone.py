@@ -63,9 +63,22 @@ class EfficientDetBackbone(nn.Module):
         max_size = inputs.shape[-1]
 
         _, p3, p4, p5 = self.backbone_net(inputs)
+        # print('----------------------------EfficientDetBackbone---------------------------------')
+        # print('p3 dimension: {}'.format(p3.shape))
+        # print('p4 dimension: {}'.format(p4.shape))
+        # print('p5 dimension: {}'.format(p5.shape))
+
 
         features = (p3, p4, p5)
         features = self.bifpn(features)
+
+        # print('----------------------------EfficientDetBackbone_after_bifpn---------------------------------')
+        # print('features length: {}'.format(len(features)))
+        # print('p3 dimension: {}'.format(features[0].shape))
+        # print('p4 dimension: {}'.format(features[1].shape))
+        # print('p5 dimension: {}'.format(features[2].shape))
+        # print('p6 dimension: {}'.format(features[3].shape))
+        # print('p7 dimension: {}'.format(features[4].shape))
 
         regression = self.regressor(features)
         classification = self.classifier(features)

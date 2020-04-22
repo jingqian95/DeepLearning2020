@@ -171,6 +171,8 @@ class BiFPN(nn.Module):
         # elif earlier phase, downsample to target phase's by pooling
         # elif later phase, upsample to target phase's by nearest interpolation
 
+
+
         if self.attention:
             p3_out, p4_out, p5_out, p6_out, p7_out = self._forward_fast_attention(inputs)
         else:
@@ -179,6 +181,9 @@ class BiFPN(nn.Module):
         return p3_out, p4_out, p5_out, p6_out, p7_out
 
     def _forward_fast_attention(self, inputs):
+
+        # print('-------------------------------BiFPN_forward_fast_attention------------------------------')
+
         if self.first_time:
             p3, p4, p5 = inputs
 
@@ -188,6 +193,13 @@ class BiFPN(nn.Module):
             p3_in = self.p3_down_channel(p3)
             p4_in = self.p4_down_channel(p4)
             p5_in = self.p5_down_channel(p5)
+
+
+            # print('p6_in shape {}'.format(p6_in.shape))
+            # print('p7_in shape {}'.format(p7_in.shape))
+            # print('p3_in shape {}'.format(p3_in.shape))
+            # print('p4_in shape {}'.format(p4_in.shape))
+            # print('p5_in shape {}'.format(p5_in.shape))
 
         else:
             # P3_0, P4_0, P5_0, P6_0 and P7_0
@@ -200,6 +212,7 @@ class BiFPN(nn.Module):
         weight = p6_w1 / (torch.sum(p6_w1, dim=0) + self.epsilon)
         # Connections for P6_0 and P7_0 to P6_1 respectively
         p6_up = self.conv6_up(self.swish(weight[0] * p6_in + weight[1] * self.p6_upsample(p7_in)))
+
 
         # Weights for P5_0 and P6_0 to P5_1
         p5_w1 = self.p5_w1_relu(self.p5_w1)
@@ -321,20 +334,32 @@ class Regressor(nn.Module):
         self.swish = MemoryEfficientSwish() if not onnx_export else Swish()
 
     def forward(self, inputs):
+        # print('----------------------------Regressor---------------------------------')
         feats = []
         for feat, bn_list in zip(inputs, self.bn_list):
+            # print('----------------------------New pyramid depth---------------------------------')
             for i, bn, conv in zip(range(self.num_layers), bn_list, self.conv_list):
+                # print('----------------------------New Layer---------------------------------')
+                # print('Layer {}'.format(i))
+                # print('Feature shape before anything: {}'.format(feat.shape))
                 feat = conv(feat)
+                # print('Feature shape after conv: {}'.format(feat.shape))
                 feat = bn(feat)
+                # print('Feature shape after bn: {}'.format(feat.shape))
                 feat = self.swish(feat)
+                # print('Feature shape after swish: {}'.format(feat.shape))
             feat = self.header(feat)
+            # print('Feature shape after header: {}'.format(feat.shape))
 
             feat = feat.permute(0, 2, 3, 1)
-            feat = feat.contiguous().view(feat.shape[0], -1, 4)
+            # print('Feature shape after permute: {}'.format(feat.shape))
 
+            feat = feat.contiguous().view(feat.shape[0], -1, 4)
+            # print('Feature shape after contiguous: {}'.format(feat.shape))
             feats.append(feat)
 
         feats = torch.cat(feats, dim=1)
+        # print('Feature output shape: {}'.format(feats.shape))
 
         return feats
 
@@ -395,10 +420,17 @@ class EfficientNet(nn.Module):
         self.model = model
 
     def forward(self, x):
+        # print('-------------------------------EfficientNet------------------------------')
+        # print('backbone efficientnet input size: {}'.format(x.shape))
         x = self.model._conv_stem(x)
+        # print('backbone efficientnet _conv_stem size: {}'.format(x.shape))
         x = self.model._bn0(x)
+        # print('backbone efficientnet _bn0 size: {}'.format(x.shape))
         x = self.model._swish(x)
+        # print('backbone efficientnet _swish size: {}'.format(x.shape))
         feature_maps = []
+
+
 
         # TODO: temporarily storing extra tensor last_x and del it later might not be a good idea,
         #  try recording stride changing when creating efficientnet,
@@ -408,7 +440,13 @@ class EfficientNet(nn.Module):
             drop_connect_rate = self.model._global_params.drop_connect_rate
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self.model._blocks)
+
+            # print('------------------------------EfficientNet-------------------------------')
+            # print('idx, drop_connect_rate, shape of x before block = \n{}, {}, {}'.format(idx, drop_connect_rate, x.shape))
             x = block(x, drop_connect_rate=drop_connect_rate)
+            # print('shape of x after block = {}'.format(x.shape))
+            # print('feature maps length: {}'.format(len(feature_maps)))
+
 
             if block._depthwise_conv.stride == [2, 2]:
                 feature_maps.append(last_x)

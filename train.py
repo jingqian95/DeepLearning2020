@@ -24,6 +24,7 @@ from efficientdet.utils import collate_fn_dl
 from utils.sync_batchnorm import patch_replication_callback
 from utils.utils import replace_w_sync_bn, CustomDataParallel, get_last_weights, init_weights
 
+
 class Params:
     def __init__(self, project_file):
         self.params = yaml.safe_load(open(project_file).read())
