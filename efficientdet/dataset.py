@@ -162,6 +162,9 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
             sample = self.transform(sample)
 
         # print(sample['img'].shape, sample['annot'].shape)
+        # print('----------------------------LabeledDataset_coco_output---------------------------------')
+        # print('After LabeledDataset_coco annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
+        # print(sample['annot'][:5])
 
         return sample
 
@@ -203,6 +206,7 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
         image_cat = cv2.cvtColor(image_cat, cv2.COLOR_BGR2RGB)
         image_cat_2 = cv2.cvtColor(image_cat_2, cv2.COLOR_BGR2RGB)
+        print('image_size: {}'.format(image_cat_2.shape))
 
         return image_cat_2.astype(np.float32) / 255.
 
@@ -215,19 +219,28 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         data_entries = self.annotation_dataframe[
             (self.annotation_dataframe['scene'] == scene_id) & (self.annotation_dataframe['sample'] == sample_id)]
         # print(data_entries.shape)
-
+        # print('----------------------------load_annotations---------------------------------')
         annotations = np.zeros((0, 5))
         # parse annotations
         for idx, a in data_entries.iterrows():
 
             annotation = np.zeros((1, 5))
-            annotation[0, :4] = a['center_x'], a['center_y'], a['box_width'], a['box_height']
+            annotation[0, :4] = a['scaled_x'], a['scaled_y'], a['scaled_box_width'], a['scaled_box_height']
+            # annotation[0, :4] = (a['center_x']+40)*768/80, (a['center_y']+40)*612/80, a['box_width']*768/80, a['box_height']*612/80
             annotation[0, 4] = self.coco_label_to_label(a['category_id'])
             annotations = np.append(annotations, annotation, axis=0)
+
+        # print('----------------------------After input---------------------------------')
+        # print('After input annotations(106,0) shape: {}\nValue'.format(annotations.shape))
+        # print(annotations[:5])
 
         # transform from [x, y, w, h] to [x1, y1, x2, y2]
         annotations[:, 2] = annotations[:, 0] + annotations[:, 2]
         annotations[:, 3] = annotations[:, 1] + annotations[:, 3]
+
+        # print('----------------------------After transform---------------------------------')
+        # print('After transform annotations(106,0) shape: {}\nValue'.format(annotations.shape))
+        # print(annotations[:5])
 
         return annotations
 
@@ -300,6 +313,9 @@ class Resizer(object):
         new_image[0:resized_height, 0:resized_width] = image
 
         annots[:, :4] *= scale
+        # print('----------------------------Resizer---------------------------------')
+        # print('After Resizer annotations(106,0) shape: {}\nValue'.format(torch.from_numpy(annots).shape))
+        # print(torch.from_numpy(annots)[:5])
 
         return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annots), 'scale': scale}
 
@@ -351,7 +367,15 @@ class Augmenter(object):
             annots[:, 0] = cols - x2
             annots[:, 2] = cols - x_tmp
 
+            # print('----------------------------Augmenter_True---------------------------------')
+            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(annots.shape))
+            # print(annots[:5])
+
             sample = {'img': image, 'annot': annots}
+        else:
+            # print('----------------------------Augmenter_False---------------------------------')
+            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
+            # print(sample['annot'][:5])
 
         return sample
 
@@ -387,7 +411,9 @@ class Normalizer(object):
 
     def __call__(self, sample):
         image, annots = sample['img'], sample['annot']
-
+        # print('----------------------------Normalizer---------------------------------')
+        # print('After Normalizer annotations(106,0) shape: {}\nValue'.format(annots.shape))
+        # print(annots[:5])
         return {'img': ((image.astype(np.float32) - self.mean) / self.std), 'annot': annots}
 
 

@@ -12,8 +12,10 @@ import yaml
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import transforms
+import torchvision
+import torch.nn.functional as F
 
-from efficientdet.dataset import LabeledDataset, Resizer, Normalizer, Augmenter, collater
+from efficientdet.dataset import LabeledDataset_coco, Resizer, Normalizer, Augmenter, collater
 
 from backbone import EfficientDetBackbone
 from tensorboardX import SummaryWriter
@@ -56,7 +58,7 @@ def get_args():
     parser.add_argument('--es_patience', type=int, default=0,
                         help='Early stopping\'s parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.')
     parser.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
-    parser.add_argument('--annotation', type=str, default='annotation.csv', help='annotation csv file name')
+    parser.add_argument('--annotation', type=str, default='annotation_newfeat_2.csv', help='annotation csv file name')
     parser.add_argument('--log_path', type=str, default='logs/')
     parser.add_argument('--load_weights', type=str, default=None,
                         help='whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
@@ -66,6 +68,7 @@ def get_args():
 
     args = parser.parse_args()
     return args
+
 
 
 
@@ -81,6 +84,8 @@ def train(opt):
     else:
         torch.manual_seed(42)
 
+
+
     opt.saved_path = opt.saved_path + f'/{params.project_name}/'
     opt.log_path = opt.log_path + f'/{params.project_name}/tensorboard/'
     os.makedirs(opt.log_path, exist_ok=True)
@@ -88,40 +93,40 @@ def train(opt):
 
     training_params = {'batch_size': opt.batch_size,
                        'shuffle': True,
-                       # 'drop_last': True,
-                       # 'collate_fn': collater,
-                       'collate_fn': collate_fn_dl,
+                       'drop_last': True,
+                       'collate_fn': collater,
                        'num_workers': opt.num_workers}
 
     val_params = {'batch_size': opt.batch_size,
                   'shuffle': False,
-                  # 'drop_last': True,
-                  # 'collate_fn': collater,
-                  'collate_fn': collate_fn_dl,
+                  'drop_last': True,
+                  'collate_fn': collater,
                   'num_workers': opt.num_workers}
 
     train_scene_index = np.arange(106, 127)
     val_scene_index = np.arange(128, 134)
+    input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
 
-    transform_dl = torchvision.transforms.ToTensor()
+    # transform_dl = torchvision.transforms.ToTensor()
+
     transform = transforms.Compose([Normalizer(mean=params.mean, std=params.std),\
                                     Augmenter(),\
                                     Resizer(input_sizes[opt.compound_coef])])
 
-    training_set = LabeledDataset(image_folder = os.path.join(opt.data_path, params.project_name),
-                                      annotation_file = s.path.join(image_folder, opt.annotation),
+    training_set = LabeledDataset_coco(image_folder = os.path.join(opt.data_path, params.project_name),
+                                      annotation_file = s.path.join(opt.data_path, params.project_name, opt.annotation),
                                       scene_index = train_scene_index,
-                                      transform = transform_dl,
+                                      transform = transform,
                                       extra_info = True
                                       )
 
     training_generator = DataLoader(training_set, **training_params)
 
 
-    val_set = LabeledDataset(image_folder = os.path.join(opt.data_path, params.project_name),
-                                      annotation_file = os.path.join(image_folder, opt.annotation),
+    val_set = LabeledDataset_coco(image_folder = os.path.join(opt.data_path, params.project_name),
+                                      annotation_file = os.path.join(opt.data_path, params.project_name, opt.annotation),
                                       scene_index = val_scene_index,
-                                      transform = transform_dl,
+                                      transform = transform,
                                       extra_info = True
                                       )
 
@@ -129,7 +134,7 @@ def train(opt):
 
 
 
-    # input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
+
     # training_set = CocoDataset(root_dir=os.path.join(opt.data_path, params.project_name), set=params.train_set,
     #                            transform=transforms.Compose([Normalizer(mean=params.mean, std=params.std),
     #                                                          Augmenter(),
@@ -222,9 +227,9 @@ def train(opt):
                                                     imgs=imgs, obj_list=obj_list)
             else:
                 cls_loss, reg_loss = self.criterion(classification, regression, anchors, annotations)
-            return cls_loss, reg_loss
+            return cls_loss, reg_loss, regression, classification, anchors
 
-    model = ModelWithLoss(model, debug=opt.debug)
+    model = ModelWithLoss(model, debug=False)
 
 
     if params.num_gpus > 0:
@@ -263,10 +268,10 @@ def train(opt):
                     progress_bar.update()
                     continue
                 try:
-                    # imgs = data['img']
-                    # annot = data['annot']
+                    imgs = data['img']
+                    annot = data['annot']
 
-                    sample_cat, sample, target, road_image, extra = data
+                    # sample_cat, sample, target, road_image, extra = data
 
                     if params.num_gpus == 1:
                         # if only one gpu, just send it to cuda:0
@@ -276,7 +281,9 @@ def train(opt):
 
                     optimizer.zero_grad()
                     # cls_loss, reg_loss = model(imgs, annot, obj_list=params.obj_list)
-                    cls_loss, reg_loss = model(sample_cat, target, obj_list=params.obj_list)
+                    # cls_loss, reg_loss = model(sample_cat, target, obj_list=params.obj_list)
+                    cls_loss, reg_loss, regression, classification, anchors = model(imgs, annot,\
+                                                                                    obj_list=params.obj_list)
                     cls_loss = cls_loss.mean()
                     reg_loss = reg_loss.mean()
 
@@ -327,7 +334,7 @@ def train(opt):
                             imgs = imgs.cuda()
                             annot = annot.cuda()
 
-                        cls_loss, reg_loss = model(imgs, annot, obj_list=params.obj_list)
+                        cls_loss, reg_loss, regression, classification, anchors = model(imgs, annot, obj_list=params.obj_list)
                         cls_loss = cls_loss.mean()
                         reg_loss = reg_loss.mean()
 
