@@ -114,7 +114,7 @@ def train(opt):
                                     Resizer(input_sizes[opt.compound_coef])])
 
     training_set = LabeledDataset_coco(image_folder = os.path.join(opt.data_path, params.project_name),
-                                      annotation_file = s.path.join(opt.data_path, params.project_name, opt.annotation),
+                                      annotation_file = os.path.join(opt.data_path, params.project_name, opt.annotation),
                                       scene_index = train_scene_index,
                                       transform = transform,
                                       extra_info = True
