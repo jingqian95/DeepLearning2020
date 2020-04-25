@@ -372,7 +372,7 @@ class Augmenter(object):
             # print(annots[:5])
 
             sample = {'img': image, 'annot': annots}
-        else:
+        # else:
             # print('----------------------------Augmenter_False---------------------------------')
             # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
             # print(sample['annot'][:5])

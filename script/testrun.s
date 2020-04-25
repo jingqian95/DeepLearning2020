@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --time=12:00:00
 #SBATCH --mem=8GB
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:2
 
 cd ../
-python train.py -n 1
+python train.py -n 2

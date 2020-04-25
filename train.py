@@ -52,7 +52,7 @@ def get_args():
     parser.add_argument('--gamma', type=float, default=1.5)
     parser.add_argument('--num_epochs', type=int, default=30)
     parser.add_argument('--val_interval', type=int, default=1, help='Number of epoches between valing phases')
-    parser.add_argument('--save_interval', type=int, default=500, help='Number of steps between saving')
+    parser.add_argument('--save_interval', type=int, default=100, help='Number of steps between saving')
     parser.add_argument('--es_min_delta', type=float, default=0.0,
                         help='Early stopping\'s parameter: minimum change loss to qualify as an improvement')
     parser.add_argument('--es_patience', type=int, default=0,
@@ -90,13 +90,13 @@ def train(opt):
 
 
     opt.saved_path = opt.saved_path + f'/{params.project_name}/' + folder_name
-    opt.saved_model_path = opt.saved_path + f'/{params.project_name}/' + folder_name + 'model/'
+    opt.saved_model_path = opt.saved_path  + 'model/'
     # opt.log_path = opt.saved_path + f'/{params.project_name}/tensorboard/'
     os.makedirs(opt.saved_path, exist_ok=True)
     os.makedirs(opt.saved_model_path, exist_ok=True)
 
     #Write config
-    with open(saved_path + '/config.txt', 'w') as f:
+    with open(opt.saved_path + '/config.txt', 'w') as f:
         f.write(str(opt))
 
     #Initialize training parameters
@@ -300,9 +300,9 @@ def train(opt):
                     cls_loss, reg_loss, regression, classification, anchors = model(imgs, annot,\
                                                                                     obj_list=params.obj_list)
                     cls_loss = cls_loss.mean()
-                    cls_loss_ls.append(cls_loss)
+                    cls_loss_ls.append(float(cls_loss))
                     reg_loss = reg_loss.mean()
-                    reg_loss_ls.append(reg_loss)
+                    reg_loss_ls.append(float(reg_loss))
 
                     loss = cls_loss + reg_loss
                     if loss == 0 or not torch.isfinite(loss):
@@ -329,12 +329,12 @@ def train(opt):
                     current_lr = optimizer.param_groups[0]['lr']
                     # writer.add_scalar('learning_rate', current_lr, step)
 
-                    if iter%100 == 0:
-                        progress_bar.set_description(
-                            'Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
+
+                    progress_bar.set_description('Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
                                 step, epoch, opt.num_epochs, iter + 1, num_iter_per_epoch, cls_loss.item(),
                                 reg_loss.item(), loss.item()))
 
+                    if step % opt.save_interval == 0:
                         loss_writer(opt.saved_path, cls_loss_ls, reg_loss_ls, epoch_loss, current_lr, step, epoch)
 
 
@@ -342,6 +342,7 @@ def train(opt):
                     step += 1
 
                     if step % opt.save_interval == 0 and step > 0:
+                        # print('Save Model')
                         best_model, best_loss, current_model = \
                             save_model(model, best_model, current_model, best_loss, loss, opt.saved_model_path, step, opt.compound_coef)
 
@@ -436,25 +437,25 @@ def save_model(model, best_model, current_model, best_loss, current_loss, saved_
     if current_model == None:
         current_model = f'efficientdet-d{compound_coef}_{step}.pth'
         model_path = os.path.join(save_dir, current_model)
-        torch.save(model, model_path)
+        torch.save(model.module.model.state_dict(), model_path)
     else:
         model_path = os.path.join(save_dir, current_model)
         os.remove(model_path)
         current_model = f'efficientdet-d{compound_coef}_{step}.pth'
         model_path = os.path.join(save_dir, current_model)
-        torch.save(model, model_path)
+        torch.save(model.module.model.state_dict(), model_path)
     print('Save best model ...')
     if best_model is None:
         best_model = f'efficientdet-d{compound_coef}_{step}.pth'
         best_loss = current_loss
-        save_with_epoch(model, save_dir, best_model, True)
+        save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
     else:
         if current_loss < best_loss:
             old_dir = best_model
             os.remove(os.path.join(save_dir, 'best-' + old_dir))
             best_model = f'efficientdet-d{compound_coef}_{step}.pth'
             best_loss = current_loss
-            save_with_epoch(model, save_dir, best_model, True)
+            save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
             print('Checkpoint saved for ', best_model)
 
     return best_model, best_loss, current_model
