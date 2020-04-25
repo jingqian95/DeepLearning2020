@@ -40,7 +40,7 @@ def get_args():
     parser.add_argument('-p', '--project', type=str, default='dl2020', help='project file that contains parameters')
     parser.add_argument('-c', '--compound_coef', type=int, default=0, help='coefficients of efficientdet')
     parser.add_argument('-n', '--num_workers', type=int, default=2, help='num_workers of dataloader')
-    parser.add_argument('--batch_size', type=int, default=3, help='The number of images per batch among all devices')
+    parser.add_argument('--batch_size', type=int, default=10, help='The number of images per batch among all devices')
     parser.add_argument('--head_only', type=bool, default=False,
                         help='whether finetunes only the regressor and the classifier, '
                              'useful in early stage convergence or small/easy dataset')
@@ -50,7 +50,7 @@ def get_args():
                                                                    ' very final stage then switch to \'sgd\'')
     parser.add_argument('--alpha', type=float, default=0.25)
     parser.add_argument('--gamma', type=float, default=1.5)
-    parser.add_argument('--num_epochs', type=int, default=100)
+    parser.add_argument('--num_epochs', type=int, default=30)
     parser.add_argument('--val_interval', type=int, default=1, help='Number of epoches between valing phases')
     parser.add_argument('--save_interval', type=int, default=500, help='Number of steps between saving')
     parser.add_argument('--es_min_delta', type=float, default=0.0,
@@ -59,7 +59,7 @@ def get_args():
                         help='Early stopping\'s parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.')
     parser.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
     parser.add_argument('--annotation', type=str, default='annotation_newfeat_2.csv', help='annotation csv file name')
-    parser.add_argument('--log_path', type=str, default='logs/')
+    # parser.add_argument('--log_path', type=str, default='saved/')
     parser.add_argument('--load_weights', type=str, default=None,
                         help='whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
     parser.add_argument('--saved_path', type=str, default='saved/')
@@ -85,12 +85,21 @@ def train(opt):
         torch.manual_seed(42)
 
 
+    folder_name = '{}_{}_coef{}/'.format(opt.project,  datetime.datetime.now().strftime("%m%d-%H%M%S"), opt.compound_coef)
 
-    opt.saved_path = opt.saved_path + f'/{params.project_name}/'
-    opt.log_path = opt.log_path + f'/{params.project_name}/tensorboard/'
-    os.makedirs(opt.log_path, exist_ok=True)
+
+
+    opt.saved_path = opt.saved_path + f'/{params.project_name}/' + folder_name
+    opt.saved_model_path = opt.saved_path + f'/{params.project_name}/' + folder_name + 'model/'
+    # opt.log_path = opt.saved_path + f'/{params.project_name}/tensorboard/'
     os.makedirs(opt.saved_path, exist_ok=True)
+    os.makedirs(opt.saved_model_path, exist_ok=True)
 
+    #Write config
+    with open(saved_path + '/config.txt', 'w') as f:
+        f.write(str(opt))
+
+    #Initialize training parameters
     training_params = {'batch_size': opt.batch_size,
                        'shuffle': True,
                        'drop_last': True,
@@ -102,6 +111,7 @@ def train(opt):
                   'drop_last': True,
                   'collate_fn': collater,
                   'num_workers': opt.num_workers}
+
 
     train_scene_index = np.arange(106, 127)
     val_scene_index = np.arange(128, 134)
@@ -209,7 +219,7 @@ def train(opt):
 
 
     # Initiate Log writer
-    writer = SummaryWriter(opt.log_path + f'/{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}/')
+    # writer = SummaryWriter(opt.log_path + f'/{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}/')
 
 
     # warp the model with loss function, to reduce the memory usage on gpu0 and speedup
@@ -247,16 +257,21 @@ def train(opt):
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3, verbose=True)
 
     epoch = 0
-    best_loss = 1e5
+    best_loss = None
     best_epoch = 0
     step = max(0, last_step)
     model.train()
+    best_model = None
+    current_model = None
+
 
     num_iter_per_epoch = len(training_generator)
 
     try:
         for epoch in range(opt.num_epochs):
             last_epoch = step // num_iter_per_epoch
+            reg_loss_ls = []
+            cls_loss_ls = []
             if epoch < last_epoch:
                 continue
 
@@ -285,35 +300,50 @@ def train(opt):
                     cls_loss, reg_loss, regression, classification, anchors = model(imgs, annot,\
                                                                                     obj_list=params.obj_list)
                     cls_loss = cls_loss.mean()
+                    cls_loss_ls.append(cls_loss)
                     reg_loss = reg_loss.mean()
+                    reg_loss_ls.append(reg_loss)
 
                     loss = cls_loss + reg_loss
                     if loss == 0 or not torch.isfinite(loss):
                         continue
 
                     loss.backward()
+
+                    if best_loss == None:
+                        best_loss = loss
+
                     # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
                     optimizer.step()
 
                     epoch_loss.append(float(loss))
 
-                    progress_bar.set_description(
-                        'Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
-                            step, epoch, opt.num_epochs, iter + 1, num_iter_per_epoch, cls_loss.item(),
-                            reg_loss.item(), loss.item()))
-                    writer.add_scalars('Loss', {'train': loss}, step)
-                    writer.add_scalars('Regression_loss', {'train': reg_loss}, step)
-                    writer.add_scalars('Classfication_loss', {'train': cls_loss}, step)
+
+
+
+                    # writer.add_scalars('Loss', {'train': loss}, step)
+                    # writer.add_scalars('Regression_loss', {'train': reg_loss}, step)
+                    # writer.add_scalars('Classfication_loss', {'train': cls_loss}, step)
 
                     # log learning_rate
                     current_lr = optimizer.param_groups[0]['lr']
-                    writer.add_scalar('learning_rate', current_lr, step)
+                    # writer.add_scalar('learning_rate', current_lr, step)
+
+                    if iter%100 == 0:
+                        progress_bar.set_description(
+                            'Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
+                                step, epoch, opt.num_epochs, iter + 1, num_iter_per_epoch, cls_loss.item(),
+                                reg_loss.item(), loss.item()))
+
+                        loss_writer(opt.saved_path, cls_loss_ls, reg_loss_ls, epoch_loss, current_lr, step, epoch)
+
+
 
                     step += 1
 
                     if step % opt.save_interval == 0 and step > 0:
-                        save_checkpoint(model, f'efficientdet-d{opt.compound_coef}_{epoch}_{step}.pth')
-                        print('checkpoint...')
+                        best_model, best_loss, current_model = \
+                            save_model(model, best_model, current_model, best_loss, loss, opt.saved_model_path, step, opt.compound_coef)
 
                 except Exception as e:
                     print('[Error]', traceback.format_exc())
@@ -352,15 +382,16 @@ def train(opt):
                 print(
                     'Val. Epoch: {}/{}. Classification loss: {:1.5f}. Regression loss: {:1.5f}. Total loss: {:1.5f}'.format(
                         epoch, opt.num_epochs, cls_loss, reg_loss, loss))
-                writer.add_scalars('Total_loss', {'val': loss}, step)
-                writer.add_scalars('Regression_loss', {'val': reg_loss}, step)
-                writer.add_scalars('Classfication_loss', {'val': cls_loss}, step)
+                # writer.add_scalars('Total_loss', {'val': loss}, step)
+                # writer.add_scalars('Regression_loss', {'val': reg_loss}, step)
+                # writer.add_scalars('Classfication_loss', {'val': cls_loss}, step)
 
-                if loss + opt.es_min_delta < best_loss:
-                    best_loss = loss
-                    best_epoch = epoch
+                # best_model, best_loss, current_model = \
+                #     save_model(model, best_model, current_model, best_loss, loss, opt.saved_model_path, step,
+                #                opt.compound_coef)
 
-                    save_checkpoint(model, f'efficientdet-d{opt.compound_coef}_{epoch}_{step}.pth')
+                loss_writer(opt.saved_path, [cls_loss], [reg_loss], [loss], current_lr, step, epoch, val = True)
+
 
                 model.train()
 
@@ -369,9 +400,9 @@ def train(opt):
                     print('[Info] Stop training at epoch {}. The lowest loss achieved is {}'.format(epoch, loss))
                     break
     except KeyboardInterrupt:
-        save_checkpoint(model, f'efficientdet-d{opt.compound_coef}_{epoch}_{step}.pth')
-        writer.close()
-    writer.close()
+        save_checkpoint(model, f'errupted_efficientdet-d{opt.compound_coef}_{epoch}_{step}.pth')
+    #     writer.close()
+    # writer.close()
 
 
 def save_checkpoint(model, name):
@@ -379,6 +410,60 @@ def save_checkpoint(model, name):
         torch.save(model.module.model.state_dict(), os.path.join(opt.saved_path, name))
     else:
         torch.save(model.model.state_dict(), os.path.join(opt.saved_path, name))
+
+def loss_writer(saved_path, cls_loss_ls, reg_loss_ls, epoch_loss, current_lr, step, epoch, val = False):
+    with open(os.path.join(saved_path, 'loss_log.txt'), 'a+') as f:
+        if val == False:
+            avg_cls_loss = np.mean(cls_loss_ls)
+            avg_reg_loss = np.mean(reg_loss_ls)
+            avg_loss = np.mean(epoch_loss)
+            line = 'Step {:d}: Current Classification Loss:{:4f}; Current Regression Loss:{:4f}; Current Loss:{:4f}; \
+             Average Classification Loss:{:4f}; Average Regression Loss:{:4f}; Average Loss:{:4f}; Current Learning Rate:{:4f}.'\
+                .format(step, cls_loss_ls[-1], reg_loss_ls[-1], epoch_loss[-1], avg_cls_loss, avg_reg_loss, avg_loss, current_lr)
+            print(line)
+            f.write(line + '\n')
+        else:
+            line = '--------------------------------------------After Epoch {}------------------------------------------------\n'.format(epoch) +\
+                   'Step {:d}: Validation Classification Loss:{:4f}; Regression Loss:{:4f}; Total Loss:{:4f}\n'.format(step, cls_loss_ls[0], reg_loss_ls[0], epoch_loss[0]) +\
+                   '----------------------------------------------------------------------------------------------------------'
+            print(line)
+            f.write(line + '\n')
+
+def save_model(model, best_model, current_model, best_loss, current_loss, saved_model_path, step, compound_coef):
+    save_dir = saved_model_path
+
+    print('Save current model ...')
+    if current_model == None:
+        current_model = f'efficientdet-d{compound_coef}_{step}.pth'
+        model_path = os.path.join(save_dir, current_model)
+        torch.save(model, model_path)
+    else:
+        model_path = os.path.join(save_dir, current_model)
+        os.remove(model_path)
+        current_model = f'efficientdet-d{compound_coef}_{step}.pth'
+        model_path = os.path.join(save_dir, current_model)
+        torch.save(model, model_path)
+    print('Save best model ...')
+    if best_model is None:
+        best_model = f'efficientdet-d{compound_coef}_{step}.pth'
+        best_loss = current_loss
+        save_with_epoch(model, save_dir, best_model, True)
+    else:
+        if current_loss < best_loss:
+            old_dir = best_model
+            os.remove(os.path.join(save_dir, 'best-' + old_dir))
+            best_model = f'efficientdet-d{compound_coef}_{step}.pth'
+            best_loss = current_loss
+            save_with_epoch(model, save_dir, best_model, True)
+            print('Checkpoint saved for ', best_model)
+
+    return best_model, best_loss, current_model
+
+
+def save_with_epoch(model, save_dir, run_name, best_model = False):
+    best_prefix = 'best-' if best_model else ''
+    model_dir = os.path.join(save_dir, best_prefix + run_name)
+    torch.save(model, model_dir)
 
 
 if __name__ == '__main__':
