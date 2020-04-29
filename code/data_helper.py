@@ -149,6 +149,9 @@ class LabeledDataset(torch.utils.data.Dataset):
             return image_cat, image_tensor, target, road_image
 
 
+
+
+
 class LabeledDataset_coco(torch.utils.data.Dataset):
     def __init__(self, image_folder, annotation_file, scene_index, transform, extra_info=True):
         """

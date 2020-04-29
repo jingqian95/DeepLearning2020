@@ -13,6 +13,15 @@ import uuid
 
 from utils.sync_batchnorm import SynchronizedBatchNorm2d
 
+image_names = [
+    'CAM_FRONT_LEFT.jpeg',
+    'CAM_FRONT.jpeg',
+    'CAM_FRONT_RIGHT.jpeg',
+    'CAM_BACK_LEFT.jpeg',
+    'CAM_BACK.jpeg',
+    'CAM_BACK_RIGHT.jpeg',
+    ]
+NUM_SAMPLE_PER_SCENE = 126
 
 def invert_affine(metas: Union[float, list, tuple], preds):
     for i in range(len(preds)):
@@ -71,6 +80,59 @@ def preprocess(*image_path, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225
     framed_metas = [img_meta[1:] for img_meta in imgs_meta]
 
     return ori_imgs, framed_imgs, framed_metas
+
+
+def preprocess_dl(folder_path, val_index, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
+    # Load original images in a list
+    ori_imgs = []
+    for scene_index in val_index:
+        scene_path = os.path.join(folder_path, 'scene_{}'.format(scene_index))
+        for sample_index in range(NUM_SAMPLE_PER_SCENE):
+            sample_path = os.path.join(scene_path, 'sample_{}'.format(sample_index))
+
+            image_front = []
+            image_back = []
+            #             images = []
+
+            for i in range(6):
+                image_path = os.path.join(sample_path, image_names[i])
+                image = cv2.imread(image_path)
+
+                #                 transform_dl = torchvision.transforms.ToTensor()
+                #                 images.append(transform_dl(image))
+
+                if i <= 2:
+                    if len(image_front) < 1:
+                        image_front = image
+                    else:
+                        image_front = np.concatenate((image_front, image), axis=0)
+                else:
+                    if len(image_back) < 1:
+                        image_back = image
+                    else:
+                        image_back = np.concatenate((image_back, image), axis=0)
+
+            image_cat_2 = np.concatenate((image_back, image_front), axis=1)
+            #             image_cat = np.concatenate((image_front, image_back), axis=0)
+            ori_imgs.append(image_cat_2)
+
+    #     ori_imgs = [cv2.imread(img_path) for img_path in image_path]
+
+    # Normalize images
+    normalized_imgs = [(img / 255 - mean) / std for img in ori_imgs]
+
+    # Each image turn into canvas, new_w, new_h, old_w, old_h, padding_w, padding_h
+    imgs_meta = [aspectaware_resize_padding(img[..., ::-1], max_size, max_size,
+                                            means=None) for img in normalized_imgs]
+
+    # canvas, resized padded images
+    framed_imgs = [img_meta[0] for img_meta in imgs_meta]
+    # metas
+    framed_metas = [img_meta[1:] for img_meta in imgs_meta]
+
+    return ori_imgs, framed_imgs, framed_metas
+
+
 
 def preprocess_video(*frame_from_video, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
     ori_imgs = frame_from_video

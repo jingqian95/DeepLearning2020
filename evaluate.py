@@ -17,21 +17,27 @@ import argparse
 import torch
 import yaml
 from tqdm import tqdm
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+# from pycocotools.coco import COCO
+# from pycocotools.cocoeval import COCOeval
+import pandas as pd
 
 from backbone import EfficientDetBackbone
 from efficientdet.utils import BBoxTransform, ClipBoxes
-from utils.utils import preprocess, invert_affine, postprocess
+from utils.utils import preprocess, invert_affine, postprocess, preprocess_dl
 
 ap = argparse.ArgumentParser()
-ap.add_argument('-p', '--project', type=str, default='coco', help='project file that contains parameters')
+ap.add_argument('-p', '--project', type=str, default='dl2020', help='project file that contains parameters')
 ap.add_argument('-c', '--compound_coef', type=int, default=0, help='coefficients of efficientdet')
 ap.add_argument('-w', '--weights', type=str, default=None, help='/path/to/weights')
-ap.add_argument('--nms_threshold', type=float, default=0.5, help='nms threshold, don\'t change it if not for testing purposes')
+ap.add_argument('-th', '--threshold', type=float, default=0.075, help='threshold for score')
+ap.add_argument('--nms_threshold', type=float, default=0.5,
+                help='nms threshold, don\'t change it if not for testing purposes')
 ap.add_argument('--cuda', type=bool, default=True)
 ap.add_argument('--device', type=int, default=0)
 ap.add_argument('--float16', type=bool, default=False)
+ap.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
+ap.add_argument('--annotation', type=str, default='annotation_newfeat_2.csv', help='annotation csv file name')
+
 args = ap.parse_args()
 
 compound_coef = args.compound_coef
@@ -40,7 +46,8 @@ use_cuda = args.cuda
 gpu = args.device
 use_float16 = args.float16
 project_name = args.project
-weights_path = f'weights/efficientdet-d{compound_coef}.pth' if args.weights is None else args.weights
+
+weights_path = 'saved/best-efficientdet-d0_7400.pth' if args.weights is None else args.weights
 
 print(f'running coco-style evaluation on project {project_name}, weights {weights_path}...')
 
@@ -49,20 +56,29 @@ obj_list = params['obj_list']
 
 input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
 
+NUM_SAMPLE_PER_SCENE = 126
 
-def evaluate_coco(img_path, set_name, image_ids, coco, model, threshold=0.05):
-    results = []
-    processed_image_ids = []
 
+def evaluate_dl(folder_path, val_index, model, model_name, threshold=0.05):
+    results = pd.DataFrame({'scene_id': [],
+                            'sample_id': [],
+                            'category_id': [],
+                            'score': [],
+                            'bbox': []})
+    columns = ['scene_id', 'sample_id', 'category_id', 'score', 'bbox']
+
+    # use to transform the output of regresser to boxes
     regressBoxes = BBoxTransform()
+    # use to clip the boxes to 0, width/height
     clipBoxes = ClipBoxes()
 
-    for image_id in tqdm(image_ids):
-        image_info = coco.loadImgs(image_id)[0]
-        image_path = img_path + image_info['file_name']
+    ori_imgs, framed_imgs, framed_metas = preprocess_dl(folder_path, val_index, max_size=input_sizes[compound_coef])
 
-        ori_imgs, framed_imgs, framed_metas = preprocess(image_path, max_size=input_sizes[compound_coef])
-        x = torch.from_numpy(framed_imgs[0])
+    for index in range(len(ori_imgs)):
+        scene_id = val_index[0] + index // NUM_SAMPLE_PER_SCENE
+        sample_id = index % NUM_SAMPLE_PER_SCENE
+
+        x = torch.from_numpy(framed_imgs[index])
 
         if use_cuda:
             x = x.cuda(gpu)
@@ -74,14 +90,14 @@ def evaluate_coco(img_path, set_name, image_ids, coco, model, threshold=0.05):
             x = x.float()
 
         x = x.unsqueeze(0).permute(0, 3, 1, 2)
+
+        # Run through model
         features, regression, classification, anchors = model(x)
 
         preds = postprocess(x,
                             anchors, regression, classification,
                             regressBoxes, clipBoxes,
                             threshold, nms_threshold)
-
-        processed_image_ids.append(image_id)
 
         if not preds:
             continue
@@ -106,22 +122,14 @@ def evaluate_coco(img_path, set_name, image_ids, coco, model, threshold=0.05):
 
                 if score < threshold:
                     break
-                image_result = {
-                    'image_id': image_id,
-                    'category_id': label + 1,
-                    'score': float(score),
-                    'bbox': box.tolist(),
-                }
 
-                results.append(image_result)
+                image_result = pd.Series([scene_id, sample_id, label + 1, float(score), box.tolist()], index=columns)
 
-    if not len(results):
-        raise Exception('the model does not provide any valid output, check model architecture and the data input')
+                results = results.append(image_result, ignore_index = True)
 
-    # write output
-    json.dump(results, open(f'{set_name}_bbox_results.json', 'w'), indent=4)
+    results.to_csv(os.path.join(folder_path, 'evaluation_result_{}_{}_{}_{}.csv'.format(model_name, val_index[0], val_index[-1], threshold)))
 
-    return processed_image_ids
+    return results
 
 
 def _eval(coco_gt, image_ids, pred_json_path):
@@ -138,16 +146,23 @@ def _eval(coco_gt, image_ids, pred_json_path):
 
 
 if __name__ == '__main__':
-    SET_NAME = params['val_set']
-    VAL_GT = f'datasets/{params["project_name"]}/annotations/instances_{SET_NAME}.json'
-    VAL_IMGS = f'datasets/{params["project_name"]}/{SET_NAME}/'
-    MAX_IMAGES = 10000
-    coco_gt = COCO(VAL_GT)
-    image_ids = coco_gt.getImgIds()[:MAX_IMAGES]
+    val_index = range(int(params['val_set'].split(',')[0]), int(params['val_set'].split(',')[1]) + 1)
+    folder_path = os.path.join(args.data_path, params['project_name'])
+    annotation_file = os.path.join(args.data_path, params['project_name'], args.annotation)
+    save_path = os.path.join(weights_path.split('/')[0], weights_path.split('/')[1], weights_path.split('/')[2])
+    model_name = weights_path.split('/')[-1].replace('.pth', '')
 
-    if not os.path.exists(f'{SET_NAME}_bbox_results.json'):
+    csv_name = folder_path + '/' + 'evaluation_result_{}_{}_{}_{}'.format(model_name, val_index[0], val_index[-1], args.threshold).replace('.', '_') + '.csv'
+
+    print(csv_name)
+    print(weights_path)
+    print(save_path)
+
+    if not os.path.exists(csv_name):
+        # Initialize model
         model = EfficientDetBackbone(compound_coef=compound_coef, num_classes=len(obj_list),
                                      ratios=eval(params['anchors_ratios']), scales=eval(params['anchors_scales']))
+        # Load weight
         model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
         model.requires_grad_(False)
         model.eval()
@@ -158,8 +173,11 @@ if __name__ == '__main__':
             if use_float16:
                 model.half()
 
-        image_ids = evaluate_coco(VAL_IMGS, SET_NAME, image_ids, coco_gt, model)
+        # Run main evaluation
+        result_df = evaluate_dl(folder_path, val_index, model, model_name, args.threshold)
 
-        _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
-    else:
-        _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
+#         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
+#     else:
+#         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
+
+

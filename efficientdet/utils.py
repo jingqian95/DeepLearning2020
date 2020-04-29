@@ -46,9 +46,13 @@ class BBoxTransform(nn.Module):
         Returns:
 
         """
+        # anchor center_y
         y_centers_a = (anchors[..., 0] + anchors[..., 2]) / 2
+        # anchor center_x
         x_centers_a = (anchors[..., 1] + anchors[..., 3]) / 2
+        # anchor height
         ha = anchors[..., 2] - anchors[..., 0]
+        # anchor width
         wa = anchors[..., 3] - anchors[..., 1]
 
         w = regression[..., 3].exp() * wa

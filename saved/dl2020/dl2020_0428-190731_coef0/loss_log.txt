@@ -1,0 +1,256 @@
+Step 0: Current Classification Loss:57164.859375; Current Regression Loss:0.454744; Current Loss:57165.312500;              Average Classification Loss:57164.859375; Average Regression Loss:0.454744; Average Loss:57165.312500; Current Learning Rate:0.000100.
+Step 100: Current Classification Loss:50571.160156; Current Regression Loss:0.764300; Current Loss:50571.925781;              Average Classification Loss:59635.509824; Average Regression Loss:0.471228; Average Loss:59635.981155; Current Learning Rate:0.000100.
+Step 200: Current Classification Loss:47261.523438; Current Regression Loss:0.211778; Current Loss:47261.734375;              Average Classification Loss:51451.294358; Average Regression Loss:0.426310; Average Loss:51451.720749; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 0------------------------------------------------
+Step 264: Validation Classification Loss:16198.410251; Regression Loss:0.125539; Total Loss:16198.535790
+----------------------------------------------------------------------------------------------------------
+Step 300: Current Classification Loss:52466.367188; Current Regression Loss:0.109435; Current Loss:52466.476562;              Average Classification Loss:34360.403980; Average Regression Loss:0.259931; Average Loss:34360.664036; Current Learning Rate:0.000100.
+Step 400: Current Classification Loss:21451.630859; Current Regression Loss:0.151027; Current Loss:21451.781250;              Average Classification Loss:32705.123197; Average Regression Loss:0.256969; Average Loss:32705.380136; Current Learning Rate:0.000100.
+Step 500: Current Classification Loss:23388.441406; Current Regression Loss:0.097127; Current Loss:23388.539062;              Average Classification Loss:30477.991314; Average Regression Loss:0.249946; Average Loss:30478.241236; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 1------------------------------------------------
+Step 528: Validation Classification Loss:9571.976096; Regression Loss:0.172570; Total Loss:9572.148667
+----------------------------------------------------------------------------------------------------------
+Step 600: Current Classification Loss:23971.207031; Current Regression Loss:0.174627; Current Loss:23971.380859;              Average Classification Loss:19808.589355; Average Regression Loss:0.198564; Average Loss:19808.787992; Current Learning Rate:0.000100.
+Step 700: Current Classification Loss:16868.785156; Current Regression Loss:0.277483; Current Loss:16869.062500;              Average Classification Loss:17702.769698; Average Regression Loss:0.203826; Average Loss:17702.973571; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 2------------------------------------------------
+Step 792: Validation Classification Loss:3833.786325; Regression Loss:0.145563; Total Loss:3833.931889
+----------------------------------------------------------------------------------------------------------
+Step 800: Current Classification Loss:7851.868164; Current Regression Loss:0.176773; Current Loss:7852.044922;              Average Classification Loss:9308.079536; Average Regression Loss:0.198460; Average Loss:9308.277941; Current Learning Rate:0.000100.
+Step 900: Current Classification Loss:4386.844238; Current Regression Loss:0.069351; Current Loss:4386.913574;              Average Classification Loss:9135.026851; Average Regression Loss:0.151189; Average Loss:9135.178111; Current Learning Rate:0.000100.
+Step 1000: Current Classification Loss:3260.680664; Current Regression Loss:0.214290; Current Loss:3260.895020;              Average Classification Loss:7827.916924; Average Regression Loss:0.154207; Average Loss:7828.071181; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 3------------------------------------------------
+Step 1056: Validation Classification Loss:1686.343716; Regression Loss:0.124015; Total Loss:1686.467731
+----------------------------------------------------------------------------------------------------------
+Step 1100: Current Classification Loss:1585.136719; Current Regression Loss:0.148915; Current Loss:1585.285645;              Average Classification Loss:4417.163081; Average Regression Loss:0.131173; Average Loss:4417.294259; Current Learning Rate:0.000100.
+Step 1200: Current Classification Loss:4551.331055; Current Regression Loss:0.052182; Current Loss:4551.383301;              Average Classification Loss:3600.766892; Average Regression Loss:0.132341; Average Loss:3600.899228; Current Learning Rate:0.000100.
+Step 1300: Current Classification Loss:1152.150879; Current Regression Loss:0.136231; Current Loss:1152.287109;              Average Classification Loss:3115.345018; Average Regression Loss:0.126304; Average Loss:3115.471320; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 4------------------------------------------------
+Step 1320: Validation Classification Loss:804.570812; Regression Loss:0.111848; Total Loss:804.682660
+----------------------------------------------------------------------------------------------------------
+Step 1400: Current Classification Loss:721.323975; Current Regression Loss:0.153980; Current Loss:721.477966;              Average Classification Loss:1739.015229; Average Regression Loss:0.113584; Average Loss:1739.128817; Current Learning Rate:0.000100.
+Step 1500: Current Classification Loss:1540.512573; Current Regression Loss:0.102119; Current Loss:1540.614746;              Average Classification Loss:1561.242246; Average Regression Loss:0.106224; Average Loss:1561.348474; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 5------------------------------------------------
+Step 1584: Validation Classification Loss:418.428819; Regression Loss:0.086649; Total Loss:418.515467
+----------------------------------------------------------------------------------------------------------
+Step 1600: Current Classification Loss:710.274292; Current Regression Loss:0.082736; Current Loss:710.357056;              Average Classification Loss:1159.777146; Average Regression Loss:0.088115; Average Loss:1159.865256; Current Learning Rate:0.000100.
+Step 1700: Current Classification Loss:401.140808; Current Regression Loss:0.095516; Current Loss:401.236328;              Average Classification Loss:888.821877; Average Regression Loss:0.093055; Average Loss:888.914930; Current Learning Rate:0.000100.
+Step 1800: Current Classification Loss:507.698822; Current Regression Loss:0.055940; Current Loss:507.754761;              Average Classification Loss:769.814976; Average Regression Loss:0.090804; Average Loss:769.905778; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 6------------------------------------------------
+Step 1848: Validation Classification Loss:229.788608; Regression Loss:0.078846; Total Loss:229.867454
+----------------------------------------------------------------------------------------------------------
+Step 1900: Current Classification Loss:495.557770; Current Regression Loss:0.077648; Current Loss:495.635406;              Average Classification Loss:510.762123; Average Regression Loss:0.089176; Average Loss:510.851299; Current Learning Rate:0.000100.
+Step 2000: Current Classification Loss:454.780609; Current Regression Loss:0.079570; Current Loss:454.860168;              Average Classification Loss:457.192340; Average Regression Loss:0.086292; Average Loss:457.278632; Current Learning Rate:0.000100.
+Step 2100: Current Classification Loss:164.328491; Current Regression Loss:0.165183; Current Loss:164.493668;              Average Classification Loss:441.392907; Average Regression Loss:0.081719; Average Loss:441.474625; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 7------------------------------------------------
+Step 2112: Validation Classification Loss:145.818481; Regression Loss:0.080681; Total Loss:145.899163
+----------------------------------------------------------------------------------------------------------
+Step 2200: Current Classification Loss:196.881042; Current Regression Loss:0.062593; Current Loss:196.943634;              Average Classification Loss:310.675105; Average Regression Loss:0.073525; Average Loss:310.748627; Current Learning Rate:0.000100.
+Step 2300: Current Classification Loss:167.525482; Current Regression Loss:0.088854; Current Loss:167.614334;              Average Classification Loss:289.026540; Average Regression Loss:0.073938; Average Loss:289.100476; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 8------------------------------------------------
+Step 2376: Validation Classification Loss:85.697423; Regression Loss:0.069980; Total Loss:85.767404
+----------------------------------------------------------------------------------------------------------
+Step 2400: Current Classification Loss:119.434860; Current Regression Loss:0.115665; Current Loss:119.550522;              Average Classification Loss:218.050403; Average Regression Loss:0.065156; Average Loss:218.115559; Current Learning Rate:0.000100.
+Step 2500: Current Classification Loss:90.816856; Current Regression Loss:0.061837; Current Loss:90.878693;              Average Classification Loss:191.974491; Average Regression Loss:0.069608; Average Loss:192.044098; Current Learning Rate:0.000100.
+Step 2600: Current Classification Loss:111.404663; Current Regression Loss:0.093044; Current Loss:111.497704;              Average Classification Loss:181.443690; Average Regression Loss:0.068963; Average Loss:181.512652; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 9------------------------------------------------
+Step 2640: Validation Classification Loss:61.141202; Regression Loss:0.069816; Total Loss:61.211018
+----------------------------------------------------------------------------------------------------------
+Step 2700: Current Classification Loss:89.188171; Current Regression Loss:0.079661; Current Loss:89.267830;              Average Classification Loss:147.069332; Average Regression Loss:0.067166; Average Loss:147.136499; Current Learning Rate:0.000100.
+Step 2800: Current Classification Loss:152.758148; Current Regression Loss:0.048607; Current Loss:152.806747;              Average Classification Loss:128.289005; Average Regression Loss:0.068407; Average Loss:128.357413; Current Learning Rate:0.000100.
+Step 2900: Current Classification Loss:112.954880; Current Regression Loss:0.055918; Current Loss:113.010796;              Average Classification Loss:121.610601; Average Regression Loss:0.066195; Average Loss:121.676796; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 10------------------------------------------------
+Step 2904: Validation Classification Loss:44.447110; Regression Loss:0.069345; Total Loss:44.516455
+----------------------------------------------------------------------------------------------------------
+Step 3000: Current Classification Loss:53.380089; Current Regression Loss:0.087569; Current Loss:53.467659;              Average Classification Loss:94.021472; Average Regression Loss:0.062723; Average Loss:94.084195; Current Learning Rate:0.000100.
+Step 3100: Current Classification Loss:95.027847; Current Regression Loss:0.032807; Current Loss:95.060654;              Average Classification Loss:91.835544; Average Regression Loss:0.061457; Average Loss:91.897001; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 11------------------------------------------------
+Step 3168: Validation Classification Loss:31.702937; Regression Loss:0.069605; Total Loss:31.772543
+----------------------------------------------------------------------------------------------------------
+Step 3200: Current Classification Loss:69.599594; Current Regression Loss:0.052062; Current Loss:69.651657;              Average Classification Loss:76.970593; Average Regression Loss:0.059374; Average Loss:77.029967; Current Learning Rate:0.000100.
+Step 3300: Current Classification Loss:61.266319; Current Regression Loss:0.060119; Current Loss:61.326439;              Average Classification Loss:65.086725; Average Regression Loss:0.060624; Average Loss:65.147349; Current Learning Rate:0.000100.
+Step 3400: Current Classification Loss:48.464581; Current Regression Loss:0.036345; Current Loss:48.500927;              Average Classification Loss:63.544940; Average Regression Loss:0.059657; Average Loss:63.604596; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 12------------------------------------------------
+Step 3432: Validation Classification Loss:24.359417; Regression Loss:0.068972; Total Loss:24.428389
+----------------------------------------------------------------------------------------------------------
+Step 3500: Current Classification Loss:48.393093; Current Regression Loss:0.032755; Current Loss:48.425850;              Average Classification Loss:52.046845; Average Regression Loss:0.057926; Average Loss:52.104771; Current Learning Rate:0.000100.
+Step 3600: Current Classification Loss:13.561543; Current Regression Loss:0.079715; Current Loss:13.641257;              Average Classification Loss:48.613333; Average Regression Loss:0.058195; Average Loss:48.671528; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 13------------------------------------------------
+Step 3696: Validation Classification Loss:18.245697; Regression Loss:0.067778; Total Loss:18.313474
+----------------------------------------------------------------------------------------------------------
+Step 3700: Current Classification Loss:35.911079; Current Regression Loss:0.062592; Current Loss:35.973671;              Average Classification Loss:37.937435; Average Regression Loss:0.056927; Average Loss:37.994362; Current Learning Rate:0.000100.
+Step 3800: Current Classification Loss:54.985619; Current Regression Loss:0.046122; Current Loss:55.031742;              Average Classification Loss:39.596818; Average Regression Loss:0.057335; Average Loss:39.654153; Current Learning Rate:0.000100.
+Step 3900: Current Classification Loss:34.898689; Current Regression Loss:0.066648; Current Loss:34.965336;              Average Classification Loss:38.497859; Average Regression Loss:0.056044; Average Loss:38.553903; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 14------------------------------------------------
+Step 3960: Validation Classification Loss:14.718783; Regression Loss:0.067946; Total Loss:14.786729
+----------------------------------------------------------------------------------------------------------
+Step 4000: Current Classification Loss:29.532167; Current Regression Loss:0.094884; Current Loss:29.627052;              Average Classification Loss:30.925764; Average Regression Loss:0.054041; Average Loss:30.979805; Current Learning Rate:0.000100.
+Step 4100: Current Classification Loss:18.596251; Current Regression Loss:0.052762; Current Loss:18.649012;              Average Classification Loss:30.045090; Average Regression Loss:0.054422; Average Loss:30.099512; Current Learning Rate:0.000100.
+Step 4200: Current Classification Loss:16.622408; Current Regression Loss:0.058001; Current Loss:16.680408;              Average Classification Loss:29.879711; Average Regression Loss:0.054273; Average Loss:29.933984; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 15------------------------------------------------
+Step 4224: Validation Classification Loss:11.715071; Regression Loss:0.066968; Total Loss:11.782040
+----------------------------------------------------------------------------------------------------------
+Step 4300: Current Classification Loss:6.236480; Current Regression Loss:0.092026; Current Loss:6.328506;              Average Classification Loss:24.695254; Average Regression Loss:0.054079; Average Loss:24.749333; Current Learning Rate:0.000100.
+Step 4400: Current Classification Loss:28.372047; Current Regression Loss:0.033766; Current Loss:28.405813;              Average Classification Loss:24.213393; Average Regression Loss:0.053865; Average Loss:24.267258; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 16------------------------------------------------
+Step 4488: Validation Classification Loss:9.674188; Regression Loss:0.067227; Total Loss:9.741415
+----------------------------------------------------------------------------------------------------------
+Step 4500: Current Classification Loss:28.911882; Current Regression Loss:0.059793; Current Loss:28.971676;              Average Classification Loss:22.837207; Average Regression Loss:0.051898; Average Loss:22.889105; Current Learning Rate:0.000100.
+Step 4600: Current Classification Loss:20.879288; Current Regression Loss:0.065868; Current Loss:20.945156;              Average Classification Loss:20.004924; Average Regression Loss:0.051814; Average Loss:20.056738; Current Learning Rate:0.000100.
+Step 4700: Current Classification Loss:10.529254; Current Regression Loss:0.066968; Current Loss:10.596222;              Average Classification Loss:18.851265; Average Regression Loss:0.052032; Average Loss:18.903297; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 17------------------------------------------------
+Step 4752: Validation Classification Loss:7.245727; Regression Loss:0.067016; Total Loss:7.312744
+----------------------------------------------------------------------------------------------------------
+Step 4800: Current Classification Loss:16.521574; Current Regression Loss:0.064298; Current Loss:16.585873;              Average Classification Loss:18.261087; Average Regression Loss:0.050239; Average Loss:18.311327; Current Learning Rate:0.000100.
+Step 4900: Current Classification Loss:14.888510; Current Regression Loss:0.045789; Current Loss:14.934299;              Average Classification Loss:16.149948; Average Regression Loss:0.051715; Average Loss:16.201663; Current Learning Rate:0.000100.
+Step 5000: Current Classification Loss:8.629917; Current Regression Loss:0.068765; Current Loss:8.698683;              Average Classification Loss:15.455744; Average Regression Loss:0.051327; Average Loss:15.507071; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 18------------------------------------------------
+Step 5016: Validation Classification Loss:6.294484; Regression Loss:0.066718; Total Loss:6.361202
+----------------------------------------------------------------------------------------------------------
+Step 5100: Current Classification Loss:17.483948; Current Regression Loss:0.055405; Current Loss:17.539352;              Average Classification Loss:13.758433; Average Regression Loss:0.050394; Average Loss:13.808827; Current Learning Rate:0.000100.
+Step 5200: Current Classification Loss:9.736300; Current Regression Loss:0.049854; Current Loss:9.786154;              Average Classification Loss:12.991593; Average Regression Loss:0.050343; Average Loss:13.041936; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 19------------------------------------------------
+Step 5280: Validation Classification Loss:5.112269; Regression Loss:0.065565; Total Loss:5.177835
+----------------------------------------------------------------------------------------------------------
+Step 5300: Current Classification Loss:7.643585; Current Regression Loss:0.057177; Current Loss:7.700762;              Average Classification Loss:10.935008; Average Regression Loss:0.052381; Average Loss:10.987389; Current Learning Rate:0.000100.
+Step 5400: Current Classification Loss:9.992634; Current Regression Loss:0.035905; Current Loss:10.028539;              Average Classification Loss:10.269163; Average Regression Loss:0.051195; Average Loss:10.320359; Current Learning Rate:0.000100.
+Step 5500: Current Classification Loss:21.744499; Current Regression Loss:0.038002; Current Loss:21.782501;              Average Classification Loss:10.208956; Average Regression Loss:0.050203; Average Loss:10.259159; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 20------------------------------------------------
+Step 5544: Validation Classification Loss:4.501591; Regression Loss:0.065237; Total Loss:4.566828
+----------------------------------------------------------------------------------------------------------
+Step 5600: Current Classification Loss:10.055851; Current Regression Loss:0.050050; Current Loss:10.105902;              Average Classification Loss:9.156722; Average Regression Loss:0.050041; Average Loss:9.206763; Current Learning Rate:0.000100.
+Step 5700: Current Classification Loss:11.169167; Current Regression Loss:0.031537; Current Loss:11.200704;              Average Classification Loss:8.728473; Average Regression Loss:0.049913; Average Loss:8.778385; Current Learning Rate:0.000100.
+Step 5800: Current Classification Loss:4.653664; Current Regression Loss:0.068762; Current Loss:4.722425;              Average Classification Loss:8.476101; Average Regression Loss:0.049737; Average Loss:8.525839; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 21------------------------------------------------
+Step 5808: Validation Classification Loss:3.757524; Regression Loss:0.065155; Total Loss:3.822679
+----------------------------------------------------------------------------------------------------------
+Step 5900: Current Classification Loss:5.844126; Current Regression Loss:0.059765; Current Loss:5.903890;              Average Classification Loss:7.398253; Average Regression Loss:0.050761; Average Loss:7.449015; Current Learning Rate:0.000100.
+Step 6000: Current Classification Loss:9.288904; Current Regression Loss:0.028178; Current Loss:9.317082;              Average Classification Loss:7.112561; Average Regression Loss:0.049597; Average Loss:7.162157; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 22------------------------------------------------
+Step 6072: Validation Classification Loss:3.213325; Regression Loss:0.065098; Total Loss:3.278424
+----------------------------------------------------------------------------------------------------------
+Step 6100: Current Classification Loss:3.565383; Current Regression Loss:0.056427; Current Loss:3.621810;              Average Classification Loss:5.902405; Average Regression Loss:0.050459; Average Loss:5.952864; Current Learning Rate:0.000100.
+Step 6200: Current Classification Loss:3.165542; Current Regression Loss:0.068169; Current Loss:3.233710;              Average Classification Loss:6.060610; Average Regression Loss:0.048878; Average Loss:6.109488; Current Learning Rate:0.000100.
+Step 6300: Current Classification Loss:6.412490; Current Regression Loss:0.045431; Current Loss:6.457921;              Average Classification Loss:6.027211; Average Regression Loss:0.048161; Average Loss:6.075372; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 23------------------------------------------------
+Step 6336: Validation Classification Loss:2.919488; Regression Loss:0.065779; Total Loss:2.985266
+----------------------------------------------------------------------------------------------------------
+Step 6400: Current Classification Loss:6.280766; Current Regression Loss:0.028427; Current Loss:6.309193;              Average Classification Loss:6.083921; Average Regression Loss:0.047091; Average Loss:6.131013; Current Learning Rate:0.000100.
+Step 6500: Current Classification Loss:2.311515; Current Regression Loss:0.062164; Current Loss:2.373679;              Average Classification Loss:5.478851; Average Regression Loss:0.047774; Average Loss:5.526625; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 24------------------------------------------------
+Step 6600: Validation Classification Loss:2.596415; Regression Loss:0.065659; Total Loss:2.662073
+----------------------------------------------------------------------------------------------------------
+Step 6600: Current Classification Loss:2.704734; Current Regression Loss:0.058453; Current Loss:2.763186;              Average Classification Loss:2.704734; Average Regression Loss:0.058453; Average Loss:2.763186; Current Learning Rate:0.000100.
+Step 6700: Current Classification Loss:4.684248; Current Regression Loss:0.032041; Current Loss:4.716290;              Average Classification Loss:4.877412; Average Regression Loss:0.046618; Average Loss:4.924030; Current Learning Rate:0.000100.
+Step 6800: Current Classification Loss:5.221280; Current Regression Loss:0.042880; Current Loss:5.264160;              Average Classification Loss:4.596489; Average Regression Loss:0.047898; Average Loss:4.644387; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 25------------------------------------------------
+Step 6864: Validation Classification Loss:2.325207; Regression Loss:0.065593; Total Loss:2.390800
+----------------------------------------------------------------------------------------------------------
+Step 6900: Current Classification Loss:2.295664; Current Regression Loss:0.067778; Current Loss:2.363442;              Average Classification Loss:4.071409; Average Regression Loss:0.047247; Average Loss:4.118656; Current Learning Rate:0.000100.
+Step 7000: Current Classification Loss:6.255680; Current Regression Loss:0.047749; Current Loss:6.303429;              Average Classification Loss:4.012539; Average Regression Loss:0.047466; Average Loss:4.060006; Current Learning Rate:0.000100.
+Step 7100: Current Classification Loss:2.654012; Current Regression Loss:0.058857; Current Loss:2.712869;              Average Classification Loss:3.839575; Average Regression Loss:0.047937; Average Loss:3.887512; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 26------------------------------------------------
+Step 7128: Validation Classification Loss:2.087673; Regression Loss:0.065455; Total Loss:2.153129
+----------------------------------------------------------------------------------------------------------
+Step 7200: Current Classification Loss:2.844214; Current Regression Loss:0.044094; Current Loss:2.888308;              Average Classification Loss:3.581070; Average Regression Loss:0.045382; Average Loss:3.626452; Current Learning Rate:0.000100.
+Step 7300: Current Classification Loss:2.027801; Current Regression Loss:0.068156; Current Loss:2.095957;              Average Classification Loss:3.364610; Average Regression Loss:0.047290; Average Loss:3.411900; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 27------------------------------------------------
+Step 7392: Validation Classification Loss:1.862528; Regression Loss:0.064828; Total Loss:1.927356
+----------------------------------------------------------------------------------------------------------
+Step 7400: Current Classification Loss:3.921569; Current Regression Loss:0.039307; Current Loss:3.960876;              Average Classification Loss:3.450781; Average Regression Loss:0.043261; Average Loss:3.494042; Current Learning Rate:0.000100.
+Step 7500: Current Classification Loss:2.288137; Current Regression Loss:0.066022; Current Loss:2.354159;              Average Classification Loss:3.053680; Average Regression Loss:0.047779; Average Loss:3.101459; Current Learning Rate:0.000100.
+Step 7600: Current Classification Loss:2.788020; Current Regression Loss:0.035256; Current Loss:2.823276;              Average Classification Loss:2.906744; Average Regression Loss:0.047557; Average Loss:2.954301; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 28------------------------------------------------
+Step 7656: Validation Classification Loss:1.719100; Regression Loss:0.064453; Total Loss:1.783553
+----------------------------------------------------------------------------------------------------------
+Step 7700: Current Classification Loss:2.031789; Current Regression Loss:0.052031; Current Loss:2.083821;              Average Classification Loss:2.689779; Average Regression Loss:0.046927; Average Loss:2.736707; Current Learning Rate:0.000100.
+Step 7800: Current Classification Loss:3.391400; Current Regression Loss:0.044779; Current Loss:3.436179;              Average Classification Loss:2.609516; Average Regression Loss:0.047866; Average Loss:2.657383; Current Learning Rate:0.000100.
+Step 7900: Current Classification Loss:2.483125; Current Regression Loss:0.051215; Current Loss:2.534340;              Average Classification Loss:2.594753; Average Regression Loss:0.047480; Average Loss:2.642233; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 29------------------------------------------------
+Step 7920: Validation Classification Loss:1.606015; Regression Loss:0.065305; Total Loss:1.671320
+----------------------------------------------------------------------------------------------------------
+Step 8000: Current Classification Loss:1.526442; Current Regression Loss:0.067204; Current Loss:1.593646;              Average Classification Loss:2.471238; Average Regression Loss:0.045730; Average Loss:2.516968; Current Learning Rate:0.000100.
+Step 8100: Current Classification Loss:1.733914; Current Regression Loss:0.054200; Current Loss:1.788114;              Average Classification Loss:2.327275; Average Regression Loss:0.046871; Average Loss:2.374146; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 30------------------------------------------------
+Step 8184: Validation Classification Loss:1.513112; Regression Loss:0.064577; Total Loss:1.577689
+----------------------------------------------------------------------------------------------------------
+Step 8200: Current Classification Loss:2.148010; Current Regression Loss:0.032555; Current Loss:2.180565;              Average Classification Loss:2.087731; Average Regression Loss:0.047833; Average Loss:2.135564; Current Learning Rate:0.000100.
+Step 8300: Current Classification Loss:1.666961; Current Regression Loss:0.043475; Current Loss:1.710436;              Average Classification Loss:2.053181; Average Regression Loss:0.046902; Average Loss:2.100083; Current Learning Rate:0.000100.
+Step 8400: Current Classification Loss:1.508775; Current Regression Loss:0.055155; Current Loss:1.563930;              Average Classification Loss:2.085599; Average Regression Loss:0.046910; Average Loss:2.132510; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 31------------------------------------------------
+Step 8448: Validation Classification Loss:1.449654; Regression Loss:0.065667; Total Loss:1.515320
+----------------------------------------------------------------------------------------------------------
+Step 8500: Current Classification Loss:1.744775; Current Regression Loss:0.025168; Current Loss:1.769943;              Average Classification Loss:1.930684; Average Regression Loss:0.046187; Average Loss:1.976872; Current Learning Rate:0.000100.
+Step 8600: Current Classification Loss:2.227982; Current Regression Loss:0.056582; Current Loss:2.284565;              Average Classification Loss:1.967423; Average Regression Loss:0.046481; Average Loss:2.013904; Current Learning Rate:0.000100.
+Step 8700: Current Classification Loss:2.312925; Current Regression Loss:0.034517; Current Loss:2.347442;              Average Classification Loss:1.893529; Average Regression Loss:0.047045; Average Loss:1.940574; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 32------------------------------------------------
+Step 8712: Validation Classification Loss:1.373903; Regression Loss:0.065250; Total Loss:1.439153
+----------------------------------------------------------------------------------------------------------
+Step 8800: Current Classification Loss:1.931156; Current Regression Loss:0.032698; Current Loss:1.963853;              Average Classification Loss:1.811653; Average Regression Loss:0.048233; Average Loss:1.859886; Current Learning Rate:0.000100.
+Step 8900: Current Classification Loss:1.508405; Current Regression Loss:0.071834; Current Loss:1.580239;              Average Classification Loss:1.801652; Average Regression Loss:0.046932; Average Loss:1.848584; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 33------------------------------------------------
+Step 8976: Validation Classification Loss:1.299807; Regression Loss:0.065003; Total Loss:1.364810
+----------------------------------------------------------------------------------------------------------
+Step 9000: Current Classification Loss:1.542026; Current Regression Loss:0.052119; Current Loss:1.594145;              Average Classification Loss:1.525489; Average Regression Loss:0.049843; Average Loss:1.575332; Current Learning Rate:0.000100.
+Step 9100: Current Classification Loss:1.597988; Current Regression Loss:0.025327; Current Loss:1.623315;              Average Classification Loss:1.591095; Average Regression Loss:0.047112; Average Loss:1.638207; Current Learning Rate:0.000100.
+Step 9200: Current Classification Loss:1.275162; Current Regression Loss:0.038876; Current Loss:1.314037;              Average Classification Loss:1.578519; Average Regression Loss:0.046565; Average Loss:1.625084; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 34------------------------------------------------
+Step 9240: Validation Classification Loss:1.249503; Regression Loss:0.064807; Total Loss:1.314310
+----------------------------------------------------------------------------------------------------------
+Step 9300: Current Classification Loss:1.459959; Current Regression Loss:0.036272; Current Loss:1.496232;              Average Classification Loss:1.508103; Average Regression Loss:0.047405; Average Loss:1.555507; Current Learning Rate:0.000100.
+Step 9400: Current Classification Loss:1.217459; Current Regression Loss:0.047819; Current Loss:1.265277;              Average Classification Loss:1.488855; Average Regression Loss:0.046806; Average Loss:1.535660; Current Learning Rate:0.000100.
+Step 9500: Current Classification Loss:1.358577; Current Regression Loss:0.062870; Current Loss:1.421448;              Average Classification Loss:1.462166; Average Regression Loss:0.046504; Average Loss:1.508670; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 35------------------------------------------------
+Step 9504: Validation Classification Loss:1.201603; Regression Loss:0.065411; Total Loss:1.267013
+----------------------------------------------------------------------------------------------------------
+Step 9600: Current Classification Loss:1.262967; Current Regression Loss:0.038095; Current Loss:1.301062;              Average Classification Loss:1.371880; Average Regression Loss:0.048154; Average Loss:1.420034; Current Learning Rate:0.000100.
+Step 9700: Current Classification Loss:2.275108; Current Regression Loss:0.038473; Current Loss:2.313581;              Average Classification Loss:1.371606; Average Regression Loss:0.047203; Average Loss:1.418809; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 36------------------------------------------------
+Step 9768: Validation Classification Loss:1.180322; Regression Loss:0.064884; Total Loss:1.245206
+----------------------------------------------------------------------------------------------------------
+Step 9800: Current Classification Loss:1.427102; Current Regression Loss:0.046903; Current Loss:1.474006;              Average Classification Loss:1.312059; Average Regression Loss:0.048085; Average Loss:1.360144; Current Learning Rate:0.000100.
+Step 9900: Current Classification Loss:1.243142; Current Regression Loss:0.054995; Current Loss:1.298137;              Average Classification Loss:1.314454; Average Regression Loss:0.047210; Average Loss:1.361664; Current Learning Rate:0.000100.
+Step 10000: Current Classification Loss:1.468742; Current Regression Loss:0.046355; Current Loss:1.515097;              Average Classification Loss:1.304109; Average Regression Loss:0.046423; Average Loss:1.350532; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 37------------------------------------------------
+Step 10032: Validation Classification Loss:1.159502; Regression Loss:0.064923; Total Loss:1.224425
+----------------------------------------------------------------------------------------------------------
+Step 10100: Current Classification Loss:1.192553; Current Regression Loss:0.030599; Current Loss:1.223152;              Average Classification Loss:1.249737; Average Regression Loss:0.045387; Average Loss:1.295124; Current Learning Rate:0.000100.
+Step 10200: Current Classification Loss:1.430463; Current Regression Loss:0.038495; Current Loss:1.468958;              Average Classification Loss:1.232392; Average Regression Loss:0.046790; Average Loss:1.279182; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 38------------------------------------------------
+Step 10296: Validation Classification Loss:1.129929; Regression Loss:0.065473; Total Loss:1.195402
+----------------------------------------------------------------------------------------------------------
+Step 10300: Current Classification Loss:1.141923; Current Regression Loss:0.051038; Current Loss:1.192961;              Average Classification Loss:1.164763; Average Regression Loss:0.051168; Average Loss:1.215930; Current Learning Rate:0.000100.
+Step 10400: Current Classification Loss:1.156010; Current Regression Loss:0.050041; Current Loss:1.206051;              Average Classification Loss:1.153993; Average Regression Loss:0.045501; Average Loss:1.199494; Current Learning Rate:0.000100.
+Step 10500: Current Classification Loss:1.045789; Current Regression Loss:0.036136; Current Loss:1.081925;              Average Classification Loss:1.140198; Average Regression Loss:0.046448; Average Loss:1.186646; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 39------------------------------------------------
+Step 10560: Validation Classification Loss:1.101898; Regression Loss:0.064292; Total Loss:1.166190
+----------------------------------------------------------------------------------------------------------
+Step 10600: Current Classification Loss:1.053180; Current Regression Loss:0.054451; Current Loss:1.107631;              Average Classification Loss:1.084388; Average Regression Loss:0.045268; Average Loss:1.129656; Current Learning Rate:0.000100.
+Step 10700: Current Classification Loss:0.992577; Current Regression Loss:0.029530; Current Loss:1.022108;              Average Classification Loss:1.099287; Average Regression Loss:0.046246; Average Loss:1.145533; Current Learning Rate:0.000100.
+Step 10800: Current Classification Loss:0.993312; Current Regression Loss:0.049440; Current Loss:1.042751;              Average Classification Loss:1.090521; Average Regression Loss:0.046299; Average Loss:1.136821; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 40------------------------------------------------
+Step 10824: Validation Classification Loss:1.094935; Regression Loss:0.064767; Total Loss:1.159702
+----------------------------------------------------------------------------------------------------------
+Step 10900: Current Classification Loss:0.995871; Current Regression Loss:0.038200; Current Loss:1.034070;              Average Classification Loss:1.082526; Average Regression Loss:0.046644; Average Loss:1.129170; Current Learning Rate:0.000100.
+Step 11000: Current Classification Loss:0.931118; Current Regression Loss:0.036378; Current Loss:0.967496;              Average Classification Loss:1.070187; Average Regression Loss:0.046046; Average Loss:1.116233; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 41------------------------------------------------
+Step 11088: Validation Classification Loss:1.082525; Regression Loss:0.065040; Total Loss:1.147565
+----------------------------------------------------------------------------------------------------------
+Step 11100: Current Classification Loss:0.995737; Current Regression Loss:0.048619; Current Loss:1.044356;              Average Classification Loss:1.001748; Average Regression Loss:0.042196; Average Loss:1.043944; Current Learning Rate:0.000100.
+Step 11200: Current Classification Loss:0.847036; Current Regression Loss:0.026479; Current Loss:0.873515;              Average Classification Loss:1.031490; Average Regression Loss:0.044209; Average Loss:1.075700; Current Learning Rate:0.000100.
+Step 11300: Current Classification Loss:0.947989; Current Regression Loss:0.044928; Current Loss:0.992916;              Average Classification Loss:1.027597; Average Regression Loss:0.045818; Average Loss:1.073415; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 42------------------------------------------------
+Step 11352: Validation Classification Loss:1.058194; Regression Loss:0.065098; Total Loss:1.123293
+----------------------------------------------------------------------------------------------------------
+Step 11400: Current Classification Loss:1.102664; Current Regression Loss:0.051861; Current Loss:1.154525;              Average Classification Loss:1.011946; Average Regression Loss:0.046388; Average Loss:1.058334; Current Learning Rate:0.000100.
+Step 11500: Current Classification Loss:1.093560; Current Regression Loss:0.065957; Current Loss:1.159517;              Average Classification Loss:1.003112; Average Regression Loss:0.046341; Average Loss:1.049453; Current Learning Rate:0.000100.
+Step 11600: Current Classification Loss:0.926151; Current Regression Loss:0.042005; Current Loss:0.968157;              Average Classification Loss:0.990686; Average Regression Loss:0.045996; Average Loss:1.036681; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 43------------------------------------------------
+Step 11616: Validation Classification Loss:1.053885; Regression Loss:0.064859; Total Loss:1.118744
+----------------------------------------------------------------------------------------------------------
+Step 11700: Current Classification Loss:1.084257; Current Regression Loss:0.048883; Current Loss:1.133140;              Average Classification Loss:0.967977; Average Regression Loss:0.045431; Average Loss:1.013408; Current Learning Rate:0.000100.
+Step 11800: Current Classification Loss:0.903105; Current Regression Loss:0.046128; Current Loss:0.949233;              Average Classification Loss:0.975005; Average Regression Loss:0.046531; Average Loss:1.021536; Current Learning Rate:0.000100.
+--------------------------------------------After Epoch 44------------------------------------------------
+Step 11880: Validation Classification Loss:1.052640; Regression Loss:0.065665; Total Loss:1.118305
+----------------------------------------------------------------------------------------------------------
+Step 11900: Current Classification Loss:1.036382; Current Regression Loss:0.056853; Current Loss:1.093236;              Average Classification Loss:0.907640; Average Regression Loss:0.042449; Average Loss:0.950089; Current Learning Rate:0.000100.
+Step 12000: Current Classification Loss:0.845456; Current Regression Loss:0.023326; Current Loss:0.868782;              Average Classification Loss:0.943197; Average Regression Loss:0.045811; Average Loss:0.989008; Current Learning Rate:0.000100.
