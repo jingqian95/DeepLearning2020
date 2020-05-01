@@ -1,0 +1,405 @@
+2020-04-25 10:41:25,900 - algorithms.Algorithm - INFO   - Algorithm options {'max_num_epochs': 50, 'disp_step': 50, 'algorithm_type': 'ClassificationModel', 'criterions': {'loss': {'opt': None, 'ctype': 'CrossEntropyLoss'}}, 'data_test_opt': {'unsupervised': True, 'batch_size': 192, 'epoch_size': None, 'random_sized_crop': False, 'split': 'val', 'dataset_name': 'imagenet'}, 'exp_dir': './experiments/ImageNet_RotNet_AlexNet', 'networks': {'model': {'opt': {'num_stages': 4, 'num_classes': 4}, 'def_file': 'architectures/AlexNet.py', 'optim_params': {'LUT_lr': [(15, 0.01), (30, 0.001), (45, 0.0001), (50, 1e-05)], 'nesterov': True, 'optim_type': 'sgd', 'lr': 0.1, 'weight_decay': 0.0005, 'momentum': 0.9}, 'pretrained': None}}, 'data_train_opt': {'unsupervised': True, 'batch_size': 192, 'epoch_size': None, 'random_sized_crop': True, 'split': 'train', 'dataset_name': 'imagenet'}}
+2020-04-25 10:41:25,900 - algorithms.Algorithm - INFO   - Set network model
+2020-04-25 10:41:25,901 - algorithms.Algorithm - INFO   - ==> Initiliaze network model from file architectures/AlexNet.py with opts: {'num_stages': 4, 'num_classes': 4}
+2020-04-25 10:41:26,506 - algorithms.Algorithm - INFO   - Initialize criterion[loss]: CrossEntropyLoss with options: None
+2020-04-25 10:41:29,476 - algorithms.Algorithm - INFO   - Initialize optimizer: sgd with params: {'LUT_lr': [(15, 0.01), (30, 0.001), (45, 0.0001), (50, 1e-05)], 'nesterov': True, 'optim_type': 'sgd', 'lr': 0.1, 'weight_decay': 0.0005, 'momentum': 0.9} for netwotk: model
+2020-04-25 10:41:29,476 - algorithms.Algorithm - INFO   - Training epoch [  1 /  50]
+2020-04-25 10:41:29,477 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:41:29,477 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:41:41,822 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 54.6811, 'prec1': 69.3707, 'loss': 0.8432, 'load_time': 45.3189}
+2020-04-25 10:41:42,560 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:41:42,561 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:41:48,983 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4492, 'prec1': 25.0, 'loss': 1.3856, 'load_time': 49.5508}
+2020-04-25 10:41:49,190 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4492, 'prec1': 25.0, 'loss': 1.3856, 'load_time': 49.5508}
+2020-04-25 10:41:49,193 - algorithms.Algorithm - INFO   - Training epoch [  2 /  50]
+2020-04-25 10:41:49,193 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:41:49,193 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:41:57,488 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 28.5959, 'prec1': 93.8303, 'loss': 0.2316, 'load_time': 71.4041}
+2020-04-25 10:41:58,266 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:41:58,266 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:42:04,787 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.3889, 'prec1': 37.3112, 'loss': 1.3812, 'load_time': 49.6111}
+2020-04-25 10:42:04,983 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.3889, 'prec1': 37.3112, 'loss': 1.3812, 'load_time': 49.6111}
+2020-04-25 10:42:04,997 - algorithms.Algorithm - INFO   - Training epoch [  3 /  50]
+2020-04-25 10:42:04,997 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:42:04,997 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:13,223 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.2377, 'prec1': 95.7899, 'loss': 0.1565, 'load_time': 66.7623}
+2020-04-25 10:42:14,036 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:14,037 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:42:20,385 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 47.3388, 'prec1': 47.3503, 'loss': 1.3641, 'load_time': 52.6612}
+2020-04-25 10:42:20,585 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 47.3388, 'prec1': 47.3503, 'loss': 1.3641, 'load_time': 52.6612}
+2020-04-25 10:42:20,594 - algorithms.Algorithm - INFO   - Training epoch [  4 /  50]
+2020-04-25 10:42:20,594 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:42:20,594 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:28,871 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1624, 'prec1': 95.6966, 'loss': 0.1499, 'load_time': 66.8376}
+2020-04-25 10:42:29,673 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:29,673 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:42:35,851 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 48.0342, 'prec1': 41.7404, 'loss': 1.3173, 'load_time': 51.9658}
+2020-04-25 10:42:36,066 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 48.0342, 'prec1': 41.7404, 'loss': 1.3173, 'load_time': 51.9658}
+2020-04-25 10:42:36,090 - algorithms.Algorithm - INFO   - Training epoch [  5 /  50]
+2020-04-25 10:42:36,090 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:42:36,090 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:44,329 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 31.0813, 'prec1': 96.7947, 'loss': 0.0953, 'load_time': 68.9187}
+2020-04-25 10:42:45,214 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:42:45,214 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:42:51,618 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4547, 'prec1': 71.5582, 'loss': 1.1665, 'load_time': 49.5453}
+2020-04-25 10:42:51,817 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4547, 'prec1': 71.5582, 'loss': 1.1665, 'load_time': 49.5453}
+2020-04-25 10:42:51,824 - algorithms.Algorithm - INFO   - Training epoch [  6 /  50]
+2020-04-25 10:42:51,824 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:42:51,824 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:00,170 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.8479, 'prec1': 96.9705, 'loss': 0.0876, 'load_time': 67.1521}
+2020-04-25 10:43:00,983 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:00,984 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:43:07,534 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6033, 'prec1': 72.1701, 'loss': 0.948, 'load_time': 49.3967}
+2020-04-25 10:43:07,724 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6033, 'prec1': 72.1701, 'loss': 0.948, 'load_time': 49.3967}
+2020-04-25 10:43:07,740 - algorithms.Algorithm - INFO   - Training epoch [  7 /  50]
+2020-04-25 10:43:07,740 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:43:07,740 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:16,384 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.084, 'prec1': 98.2943, 'loss': 0.0532, 'load_time': 66.916}
+2020-04-25 10:43:17,235 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:17,235 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:43:23,642 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.8396, 'prec1': 96.6254, 'loss': 0.6315, 'load_time': 49.1604}
+2020-04-25 10:43:23,825 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.8396, 'prec1': 96.6254, 'loss': 0.6315, 'load_time': 49.1604}
+2020-04-25 10:43:23,848 - algorithms.Algorithm - INFO   - Training epoch [  8 /  50]
+2020-04-25 10:43:23,848 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:43:23,848 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:32,199 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0195, 'prec1': 98.329, 'loss': 0.0471, 'load_time': 66.9805}
+2020-04-25 10:43:33,000 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:33,000 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:43:39,158 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6549, 'prec1': 99.4054, 'loss': 0.3465, 'load_time': 49.3451}
+2020-04-25 10:43:39,392 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6549, 'prec1': 99.4054, 'loss': 0.3465, 'load_time': 49.3451}
+2020-04-25 10:43:39,392 - algorithms.Algorithm - INFO   - Training epoch [  9 /  50]
+2020-04-25 10:43:39,393 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:43:39,393 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:47,705 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0383, 'prec1': 98.8694, 'loss': 0.0409, 'load_time': 66.9617}
+2020-04-25 10:43:48,533 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:43:48,533 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:43:54,885 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4946, 'prec1': 99.9349, 'loss': 0.1085, 'load_time': 49.5054}
+2020-04-25 10:43:55,084 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4946, 'prec1': 99.9349, 'loss': 0.1085, 'load_time': 49.5054}
+2020-04-25 10:43:55,091 - algorithms.Algorithm - INFO   - Training epoch [ 10 /  50]
+2020-04-25 10:43:55,091 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:43:55,091 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:03,398 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.9182, 'prec1': 98.8021, 'loss': 0.0398, 'load_time': 67.0818}
+2020-04-25 10:44:04,240 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:04,240 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:44:10,596 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 46.4235, 'prec1': 99.9327, 'loss': 0.0363, 'load_time': 53.5765}
+2020-04-25 10:44:10,794 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 46.4235, 'prec1': 99.9327, 'loss': 0.0363, 'load_time': 53.5765}
+2020-04-25 10:44:10,803 - algorithms.Algorithm - INFO   - Training epoch [ 11 /  50]
+2020-04-25 10:44:10,803 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:44:10,803 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:19,061 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1475, 'prec1': 98.763, 'loss': 0.0345, 'load_time': 66.8525}
+2020-04-25 10:44:19,901 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:19,901 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:44:26,065 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 49.5116, 'prec1': 100.0, 'loss': 0.0335, 'load_time': 50.4884}
+2020-04-25 10:44:26,260 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 49.5116, 'prec1': 100.0, 'loss': 0.0335, 'load_time': 50.4884}
+2020-04-25 10:44:26,267 - algorithms.Algorithm - INFO   - Training epoch [ 12 /  50]
+2020-04-25 10:44:26,267 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:44:26,267 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:34,723 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1749, 'prec1': 98.8433, 'loss': 0.0367, 'load_time': 66.8251}
+2020-04-25 10:44:35,548 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:35,549 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:44:41,807 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5942, 'prec1': 99.8003, 'loss': 0.0083, 'load_time': 49.4058}
+2020-04-25 10:44:42,037 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5942, 'prec1': 99.8003, 'loss': 0.0083, 'load_time': 49.4058}
+2020-04-25 10:44:42,051 - algorithms.Algorithm - INFO   - Training epoch [ 13 /  50]
+2020-04-25 10:44:42,051 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:44:42,051 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:50,727 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1943, 'prec1': 99.3056, 'loss': 0.0275, 'load_time': 66.8057}
+2020-04-25 10:44:51,525 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:44:51,526 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:44:57,698 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6366, 'prec1': 99.9327, 'loss': 0.0087, 'load_time': 49.3634}
+2020-04-25 10:44:57,912 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6366, 'prec1': 99.9327, 'loss': 0.0087, 'load_time': 49.3634}
+2020-04-25 10:44:57,935 - algorithms.Algorithm - INFO   - Training epoch [ 14 /  50]
+2020-04-25 10:44:57,935 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:44:57,935 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:06,095 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1403, 'prec1': 98.6458, 'loss': 0.0377, 'load_time': 66.8597}
+2020-04-25 10:45:06,967 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:06,967 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:45:13,394 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.422, 'prec1': 99.9327, 'loss': 0.0062, 'load_time': 49.578}
+2020-04-25 10:45:13,578 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.422, 'prec1': 99.9327, 'loss': 0.0062, 'load_time': 49.578}
+2020-04-25 10:45:13,601 - algorithms.Algorithm - INFO   - Training epoch [ 15 /  50]
+2020-04-25 10:45:13,601 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0100000000
+2020-04-25 10:45:13,601 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:21,932 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0236, 'prec1': 99.0191, 'loss': 0.0332, 'load_time': 66.9764}
+2020-04-25 10:45:22,751 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:22,752 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:45:28,959 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6205, 'prec1': 100.0, 'loss': 0.0038, 'load_time': 49.3795}
+2020-04-25 10:45:29,156 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6205, 'prec1': 100.0, 'loss': 0.0038, 'load_time': 49.3795}
+2020-04-25 10:45:29,163 - algorithms.Algorithm - INFO   - Training epoch [ 16 /  50]
+2020-04-25 10:45:29,163 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:45:29,163 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:37,507 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0697, 'prec1': 98.737, 'loss': 0.0429, 'load_time': 66.9303}
+2020-04-25 10:45:38,315 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:38,316 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:45:44,706 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5783, 'prec1': 100.0, 'loss': 0.002, 'load_time': 49.4217}
+2020-04-25 10:45:44,895 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5783, 'prec1': 100.0, 'loss': 0.002, 'load_time': 49.4217}
+2020-04-25 10:45:44,923 - algorithms.Algorithm - INFO   - Training epoch [ 17 /  50]
+2020-04-25 10:45:44,923 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:45:44,923 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:53,178 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.9721, 'prec1': 99.0365, 'loss': 0.0232, 'load_time': 67.0279}
+2020-04-25 10:45:54,015 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:45:54,016 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:46:00,418 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4189, 'prec1': 100.0, 'loss': 0.0014, 'load_time': 49.5811}
+2020-04-25 10:46:00,629 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4189, 'prec1': 100.0, 'loss': 0.0014, 'load_time': 49.5811}
+2020-04-25 10:46:00,630 - algorithms.Algorithm - INFO   - Training epoch [ 18 /  50]
+2020-04-25 10:46:00,630 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:46:00,630 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:08,991 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0068, 'prec1': 98.878, 'loss': 0.031, 'load_time': 66.9932}
+2020-04-25 10:46:09,817 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:09,817 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:46:15,894 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4244, 'prec1': 100.0, 'loss': 0.0012, 'load_time': 49.5756}
+2020-04-25 10:46:16,112 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4244, 'prec1': 100.0, 'loss': 0.0012, 'load_time': 49.5756}
+2020-04-25 10:46:16,126 - algorithms.Algorithm - INFO   - Training epoch [ 19 /  50]
+2020-04-25 10:46:16,126 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:46:16,126 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:24,573 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1145, 'prec1': 98.7109, 'loss': 0.0339, 'load_time': 66.8855}
+2020-04-25 10:46:25,387 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:25,388 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:46:31,765 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.7899, 'prec1': 100.0, 'loss': 0.0011, 'load_time': 49.2101}
+2020-04-25 10:46:31,957 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.7899, 'prec1': 100.0, 'loss': 0.0011, 'load_time': 49.2101}
+2020-04-25 10:46:31,966 - algorithms.Algorithm - INFO   - Training epoch [ 20 /  50]
+2020-04-25 10:46:31,966 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:46:31,966 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:40,205 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0613, 'prec1': 99.1211, 'loss': 0.0259, 'load_time': 66.9387}
+2020-04-25 10:46:41,038 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:46:41,038 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:46:53,142 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.1141, 'prec1': 100.0, 'loss': 0.001, 'load_time': 49.8859}
+2020-04-25 10:46:53,339 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.1141, 'prec1': 100.0, 'loss': 0.001, 'load_time': 49.8859}
+2020-04-25 10:46:53,369 - algorithms.Algorithm - INFO   - Training epoch [ 21 /  50]
+2020-04-25 10:46:53,369 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:46:53,369 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:01,744 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.3573, 'prec1': 99.0386, 'loss': 0.0283, 'load_time': 67.6427}
+2020-04-25 10:47:02,549 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:02,549 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:47:08,922 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4726, 'prec1': 100.0, 'loss': 0.0009, 'load_time': 49.5274}
+2020-04-25 10:47:09,129 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4726, 'prec1': 100.0, 'loss': 0.0009, 'load_time': 49.5274}
+2020-04-25 10:47:09,136 - algorithms.Algorithm - INFO   - Training epoch [ 22 /  50]
+2020-04-25 10:47:09,136 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:47:09,136 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:17,813 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.445, 'prec1': 99.8025, 'loss': 0.0103, 'load_time': 66.555}
+2020-04-25 10:47:18,648 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:18,649 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:47:25,148 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6404, 'prec1': 100.0, 'loss': 0.0009, 'load_time': 49.3596}
+2020-04-25 10:47:25,333 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6404, 'prec1': 100.0, 'loss': 0.0009, 'load_time': 49.3596}
+2020-04-25 10:47:25,355 - algorithms.Algorithm - INFO   - Training epoch [ 23 /  50]
+2020-04-25 10:47:25,355 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:47:25,355 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:34,029 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.7185, 'prec1': 99.1862, 'loss': 0.022, 'load_time': 67.2815}
+2020-04-25 10:47:34,863 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:34,863 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:47:41,278 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5244, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4756}
+2020-04-25 10:47:41,475 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5244, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4756}
+2020-04-25 10:47:41,497 - algorithms.Algorithm - INFO   - Training epoch [ 24 /  50]
+2020-04-25 10:47:41,498 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:47:41,498 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:49,824 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 29.1104, 'prec1': 99.6419, 'loss': 0.0144, 'load_time': 70.8896}
+2020-04-25 10:47:50,651 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:47:50,652 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:47:57,045 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5936, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4064}
+2020-04-25 10:47:57,233 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5936, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4064}
+2020-04-25 10:47:57,259 - algorithms.Algorithm - INFO   - Training epoch [ 25 /  50]
+2020-04-25 10:47:57,259 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:47:57,259 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:05,560 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.4506, 'prec1': 99.3815, 'loss': 0.024, 'load_time': 66.5494}
+2020-04-25 10:48:06,382 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:06,382 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:48:12,780 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6266, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.3734}
+2020-04-25 10:48:12,983 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6266, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.3734}
+2020-04-25 10:48:12,990 - algorithms.Algorithm - INFO   - Training epoch [ 26 /  50]
+2020-04-25 10:48:12,990 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:48:12,990 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:21,366 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.8081, 'prec1': 99.6332, 'loss': 0.0176, 'load_time': 67.1919}
+2020-04-25 10:48:22,183 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:22,183 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:48:28,568 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5709, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4291}
+2020-04-25 10:48:28,774 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5709, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4291}
+2020-04-25 10:48:28,781 - algorithms.Algorithm - INFO   - Training epoch [ 27 /  50]
+2020-04-25 10:48:28,781 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:48:28,781 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:36,965 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.3002, 'prec1': 98.9605, 'loss': 0.0303, 'load_time': 66.6998}
+2020-04-25 10:48:37,779 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:37,779 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:48:44,028 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6253, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.3747}
+2020-04-25 10:48:44,236 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6253, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.3747}
+2020-04-25 10:48:44,243 - algorithms.Algorithm - INFO   - Training epoch [ 28 /  50]
+2020-04-25 10:48:44,243 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:48:44,243 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:52,638 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0776, 'prec1': 99.5313, 'loss': 0.0154, 'load_time': 66.9224}
+2020-04-25 10:48:53,547 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:48:53,547 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:48:59,676 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5269, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.4731}
+2020-04-25 10:48:59,898 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5269, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.4731}
+2020-04-25 10:48:59,899 - algorithms.Algorithm - INFO   - Training epoch [ 29 /  50]
+2020-04-25 10:48:59,899 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:48:59,899 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:08,146 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0706, 'prec1': 99.1211, 'loss': 0.0221, 'load_time': 66.9294}
+2020-04-25 10:49:09,018 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:09,018 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:49:15,341 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6379, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.3621}
+2020-04-25 10:49:15,527 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6379, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.3621}
+2020-04-25 10:49:15,536 - algorithms.Algorithm - INFO   - Training epoch [ 30 /  50]
+2020-04-25 10:49:15,543 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0010000000
+2020-04-25 10:49:15,543 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:24,076 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.8961, 'prec1': 99.3381, 'loss': 0.0174, 'load_time': 67.1039}
+2020-04-25 10:49:24,915 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:24,915 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:49:31,023 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5296, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.4704}
+2020-04-25 10:49:31,254 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5296, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 49.4704}
+2020-04-25 10:49:31,261 - algorithms.Algorithm - INFO   - Training epoch [ 31 /  50]
+2020-04-25 10:49:31,261 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:49:31,261 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:39,652 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.3361, 'prec1': 99.1016, 'loss': 0.0257, 'load_time': 66.6639}
+2020-04-25 10:49:40,452 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:40,452 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:49:46,938 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 49.7595, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 50.2405}
+2020-04-25 10:49:47,135 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 49.7595, 'prec1': 100.0, 'loss': 0.0007, 'load_time': 50.2405}
+2020-04-25 10:49:47,144 - algorithms.Algorithm - INFO   - Training epoch [ 32 /  50]
+2020-04-25 10:49:47,144 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:49:47,144 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:55,497 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.7746, 'prec1': 99.4054, 'loss': 0.0229, 'load_time': 67.2254}
+2020-04-25 10:49:56,367 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:49:56,368 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:50:02,763 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.3851, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.6149}
+2020-04-25 10:50:02,966 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.3851, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.6149}
+2020-04-25 10:50:02,968 - algorithms.Algorithm - INFO   - Training epoch [ 33 /  50]
+2020-04-25 10:50:02,968 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:50:02,975 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:11,237 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0075, 'prec1': 99.6376, 'loss': 0.0135, 'load_time': 66.9925}
+2020-04-25 10:50:12,059 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:12,059 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:50:18,442 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5228, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4772}
+2020-04-25 10:50:18,657 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5228, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4772}
+2020-04-25 10:50:18,658 - algorithms.Algorithm - INFO   - Training epoch [ 34 /  50]
+2020-04-25 10:50:18,658 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:50:18,658 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:26,875 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.2249, 'prec1': 98.9453, 'loss': 0.0264, 'load_time': 66.7751}
+2020-04-25 10:50:27,822 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:27,823 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:50:34,118 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4099, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5901}
+2020-04-25 10:50:34,344 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4099, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5901}
+2020-04-25 10:50:34,351 - algorithms.Algorithm - INFO   - Training epoch [ 35 /  50]
+2020-04-25 10:50:34,351 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:50:34,351 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:42,706 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.9305, 'prec1': 98.9757, 'loss': 0.0298, 'load_time': 67.0695}
+2020-04-25 10:50:43,588 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:43,588 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:50:49,728 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4813, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5187}
+2020-04-25 10:50:49,914 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4813, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5187}
+2020-04-25 10:50:49,939 - algorithms.Algorithm - INFO   - Training epoch [ 36 /  50]
+2020-04-25 10:50:49,939 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:50:49,939 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:58,270 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.9437, 'prec1': 98.9865, 'loss': 0.0332, 'load_time': 67.0563}
+2020-04-25 10:50:59,096 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:50:59,096 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:51:05,423 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 46.7299, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 53.2701}
+2020-04-25 10:51:05,626 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 46.7299, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 53.2701}
+2020-04-25 10:51:05,633 - algorithms.Algorithm - INFO   - Training epoch [ 37 /  50]
+2020-04-25 10:51:05,633 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:51:05,633 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:13,867 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 30.1355, 'prec1': 99.7027, 'loss': 0.0125, 'load_time': 69.8645}
+2020-04-25 10:51:14,693 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:14,694 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:51:20,866 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5195, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4805}
+2020-04-25 10:51:21,091 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5195, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4805}
+2020-04-25 10:51:21,098 - algorithms.Algorithm - INFO   - Training epoch [ 38 /  50]
+2020-04-25 10:51:21,098 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:51:21,098 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:29,487 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.185, 'prec1': 99.1102, 'loss': 0.0293, 'load_time': 66.815}
+2020-04-25 10:51:30,278 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:30,278 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:51:36,621 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5512, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4488}
+2020-04-25 10:51:36,837 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5512, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4488}
+2020-04-25 10:51:36,846 - algorithms.Algorithm - INFO   - Training epoch [ 39 /  50]
+2020-04-25 10:51:36,846 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:51:36,846 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:45,204 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 32.4988, 'prec1': 99.0885, 'loss': 0.024, 'load_time': 67.5012}
+2020-04-25 10:51:45,985 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:51:45,985 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:51:52,178 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.745, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.255}
+2020-04-25 10:51:52,408 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.745, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.255}
+2020-04-25 10:51:52,412 - algorithms.Algorithm - INFO   - Training epoch [ 40 /  50]
+2020-04-25 10:51:52,412 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:51:52,412 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:00,757 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.4476, 'prec1': 99.1884, 'loss': 0.0262, 'load_time': 66.5524}
+2020-04-25 10:52:01,661 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:01,662 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:52:08,044 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5875, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4125}
+2020-04-25 10:52:08,234 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5875, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4125}
+2020-04-25 10:52:08,257 - algorithms.Algorithm - INFO   - Training epoch [ 41 /  50]
+2020-04-25 10:52:08,257 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:52:08,257 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:16,587 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.0077, 'prec1': 99.5768, 'loss': 0.0144, 'load_time': 66.9923}
+2020-04-25 10:52:17,378 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:17,378 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:52:23,772 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.451, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.549}
+2020-04-25 10:52:23,981 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.451, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.549}
+2020-04-25 10:52:23,981 - algorithms.Algorithm - INFO   - Training epoch [ 42 /  50]
+2020-04-25 10:52:23,981 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:52:23,982 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:32,160 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1757, 'prec1': 98.9757, 'loss': 0.0299, 'load_time': 66.8243}
+2020-04-25 10:52:32,990 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:32,990 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:52:39,227 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5447, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4553}
+2020-04-25 10:52:39,421 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5447, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4553}
+2020-04-25 10:52:39,445 - algorithms.Algorithm - INFO   - Training epoch [ 43 /  50]
+2020-04-25 10:52:39,445 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:52:39,445 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:47,854 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 27.079, 'prec1': 99.375, 'loss': 0.0229, 'load_time': 72.921}
+2020-04-25 10:52:48,781 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:52:48,782 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:52:55,171 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4224, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5776}
+2020-04-25 10:52:55,369 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4224, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5776}
+2020-04-25 10:52:55,376 - algorithms.Algorithm - INFO   - Training epoch [ 44 /  50]
+2020-04-25 10:52:55,383 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:52:55,383 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:03,795 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1076, 'prec1': 98.8802, 'loss': 0.0334, 'load_time': 66.8924}
+2020-04-25 10:53:04,604 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:04,605 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:53:10,763 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.3156, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.6844}
+2020-04-25 10:53:10,953 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.3156, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.6844}
+2020-04-25 10:53:10,960 - algorithms.Algorithm - INFO   - Training epoch [ 45 /  50]
+2020-04-25 10:53:10,960 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0001000000
+2020-04-25 10:53:10,960 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:19,509 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 30.8664, 'prec1': 98.9974, 'loss': 0.0291, 'load_time': 69.1336}
+2020-04-25 10:53:20,389 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:20,389 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:53:26,813 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5307, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4693}
+2020-04-25 10:53:27,009 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5307, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4693}
+2020-04-25 10:53:27,019 - algorithms.Algorithm - INFO   - Training epoch [ 46 /  50]
+2020-04-25 10:53:27,019 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0000100000
+2020-04-25 10:53:27,019 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:35,686 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.1892, 'prec1': 98.9844, 'loss': 0.0242, 'load_time': 66.8108}
+2020-04-25 10:53:36,539 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:36,539 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:53:42,636 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4302, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5698}
+2020-04-25 10:53:42,858 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4302, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5698}
+2020-04-25 10:53:42,884 - algorithms.Algorithm - INFO   - Training epoch [ 47 /  50]
+2020-04-25 10:53:42,884 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0000100000
+2020-04-25 10:53:42,884 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:51,195 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 28.5278, 'prec1': 99.4119, 'loss': 0.0181, 'load_time': 71.4722}
+2020-04-25 10:53:52,057 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:53:52,057 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:53:58,465 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.4715, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5285}
+2020-04-25 10:53:58,658 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.4715, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.5285}
+2020-04-25 10:53:58,681 - algorithms.Algorithm - INFO   - Training epoch [ 48 /  50]
+2020-04-25 10:53:58,681 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0000100000
+2020-04-25 10:53:58,681 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:06,912 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 30.4729, 'prec1': 99.6267, 'loss': 0.02, 'load_time': 69.5271}
+2020-04-25 10:54:07,764 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:07,765 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:54:14,122 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.6419, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.3581}
+2020-04-25 10:54:14,349 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.6419, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.3581}
+2020-04-25 10:54:14,356 - algorithms.Algorithm - INFO   - Training epoch [ 49 /  50]
+2020-04-25 10:54:14,356 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0000100000
+2020-04-25 10:54:14,356 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:22,628 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 29.3549, 'prec1': 98.5525, 'loss': 0.0423, 'load_time': 70.6451}
+2020-04-25 10:54:23,532 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:23,532 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:54:29,934 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5968, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4032}
+2020-04-25 10:54:30,130 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5968, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4032}
+2020-04-25 10:54:30,139 - algorithms.Algorithm - INFO   - Training epoch [ 50 /  50]
+2020-04-25 10:54:30,139 - algorithms.Algorithm - INFO   - ==> Set to model optimizer lr = 0.0000100000
+2020-04-25 10:54:30,139 - algorithms.Algorithm - INFO   - Training: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:38,338 - algorithms.Algorithm - INFO   - ==> Training stats: {'process_time': 33.2378, 'prec1': 99.4076, 'loss': 0.0213, 'load_time': 66.7622}
+2020-04-25 10:54:39,178 - algorithms.Algorithm - INFO   - Evaluating: ImageNet_RotNet_AlexNet
+2020-04-25 10:54:39,178 - algorithms.Algorithm - INFO   - ==> Dataset: imagenet_val [3 images]
+2020-04-25 10:54:45,409 - algorithms.Algorithm - INFO   - ==> Results: {'process_time': 50.5386, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4614}
+2020-04-25 10:54:45,620 - algorithms.Algorithm - INFO   - ==> Evaluation stats: {'process_time': 50.5386, 'prec1': 100.0, 'loss': 0.0008, 'load_time': 49.4614}
