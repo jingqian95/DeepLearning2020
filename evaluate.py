@@ -29,10 +29,10 @@ ap = argparse.ArgumentParser()
 ap.add_argument('-p', '--project', type=str, default='dl2020', help='project file that contains parameters')
 ap.add_argument('-c', '--compound_coef', type=int, default=0, help='coefficients of efficientdet')
 ap.add_argument('-w', '--weights', type=str, default=None, help='/path/to/weights')
-ap.add_argument('-th', '--threshold', type=float, default=0.075, help='threshold for score')
+ap.add_argument('-th', '--threshold', type=float, default=0.05, help='threshold for score')
 ap.add_argument('--nms_threshold', type=float, default=0.5,
                 help='nms threshold, don\'t change it if not for testing purposes')
-ap.add_argument('--cuda', type=bool, default=True)
+ap.add_argument('--cuda', type=bool, default= False)
 ap.add_argument('--device', type=int, default=0)
 ap.add_argument('--float16', type=bool, default=False)
 ap.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
@@ -59,7 +59,7 @@ input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
 NUM_SAMPLE_PER_SCENE = 126
 
 
-def evaluate_dl(folder_path, val_index, model, model_name, threshold=0.05):
+def evaluate_dl(folder_path, val_index, model, csv_name, threshold=0.05):
     results = pd.DataFrame({'scene_id': [],
                             'sample_id': [],
                             'category_id': [],
@@ -127,7 +127,7 @@ def evaluate_dl(folder_path, val_index, model, model_name, threshold=0.05):
 
                 results = results.append(image_result, ignore_index = True)
 
-    results.to_csv(os.path.join(folder_path, 'evaluation_result_{}_{}_{}_{}.csv'.format(model_name, val_index[0], val_index[-1], threshold)))
+    results.to_csv(csv_name)
 
     return results
 
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     save_path = os.path.join(weights_path.split('/')[0], weights_path.split('/')[1], weights_path.split('/')[2])
     model_name = weights_path.split('/')[-1].replace('.pth', '')
 
-    csv_name = folder_path + '/' + 'evaluation_result_{}_{}_{}_{}'.format(model_name, val_index[0], val_index[-1], args.threshold).replace('.', '_') + '.csv'
+    csv_name = save_path + '/' + 'evaluation_result_{}_{}_{}_{}_{}.csv'.format(model_name, val_index[0], val_index[-1], args.threshold, args.nms_threshold)
 
     print(csv_name)
     print(weights_path)
@@ -166,6 +166,7 @@ if __name__ == '__main__':
         model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
         model.requires_grad_(False)
         model.eval()
+        print('!')
 
         if use_cuda:
             model.cuda(gpu)
@@ -174,10 +175,9 @@ if __name__ == '__main__':
                 model.half()
 
         # Run main evaluation
-        result_df = evaluate_dl(folder_path, val_index, model, model_name, args.threshold)
+        result_df = evaluate_dl(folder_path, val_index, model, csv_name, args.threshold)
 
 #         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
 #     else:
 #         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
-
 

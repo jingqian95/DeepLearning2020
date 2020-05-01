@@ -1,0 +1,5 @@
+running coco-style evaluation on project dl2020, weights saved/dl2020/dl2020_0430-162145_coef0/model/best-efficientdet-d0_11970_val.pth...
+saved/dl2020/dl2020_0430-162145_coef0/evaluation_result_best-efficientdet-d0_11970_val_132_133_0.05_0.1.csv
+saved/dl2020/dl2020_0430-162145_coef0/model/best-efficientdet-d0_11970_val.pth
+saved/dl2020/dl2020_0430-162145_coef0
+!

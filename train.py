@@ -113,8 +113,9 @@ def train(opt):
                   'num_workers': opt.num_workers}
 
 
-    train_scene_index = np.arange(106, 127)
-    val_scene_index = np.arange(128, 134)
+
+    train_scene_index = np.arange(int(params.train_set.split(',')[0]), int(params.train_set.split(',')[1]) + 1)
+    val_scene_index = np.arange(int(params.val_set.split(',')[0]), int(params.val_set.split(',')[1]) + 1)
     input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
 
     # transform_dl = torchvision.transforms.ToTensor()
@@ -263,7 +264,9 @@ def train(opt):
     model.train()
     best_model = None
     current_model = None
-
+    best_val_loss = None
+    best_val_model = None
+    current_val_model = None
 
     num_iter_per_epoch = len(training_generator)
 
@@ -310,7 +313,7 @@ def train(opt):
 
                     loss.backward()
 
-                    if best_loss == None:
+                    if best_loss is None:
                         best_loss = loss
 
                     # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
@@ -380,6 +383,10 @@ def train(opt):
                 reg_loss = np.mean(loss_regression_ls)
                 loss = cls_loss + reg_loss
 
+                best_val_model, best_val_loss, current_val_model = \
+                    save_model(model, best_val_model, current_val_model, best_val_loss, loss, opt.saved_model_path, step,
+                               opt.compound_coef, val = True)
+
                 print(
                     'Val. Epoch: {}/{}. Classification loss: {:1.5f}. Regression loss: {:1.5f}. Total loss: {:1.5f}'.format(
                         epoch, opt.num_epochs, cls_loss, reg_loss, loss))
@@ -430,30 +437,42 @@ def loss_writer(saved_path, cls_loss_ls, reg_loss_ls, epoch_loss, current_lr, st
             print(line)
             f.write(line + '\n')
 
-def save_model(model, best_model, current_model, best_loss, current_loss, saved_model_path, step, compound_coef):
+def save_model(model, best_model, current_model, best_loss, current_loss, saved_model_path, step, compound_coef, val = False):
     save_dir = saved_model_path
 
     print('Save current model ...')
-    if current_model == None:
-        current_model = f'efficientdet-d{compound_coef}_{step}.pth'
+    if current_model is None:
+        if val == True:
+            current_model = f'efficientdet-d{compound_coef}_{step}_val.pth'
+        else:
+            current_model = f'efficientdet-d{compound_coef}_{step}.pth'
         model_path = os.path.join(save_dir, current_model)
         torch.save(model.module.model.state_dict(), model_path)
     else:
         model_path = os.path.join(save_dir, current_model)
         os.remove(model_path)
-        current_model = f'efficientdet-d{compound_coef}_{step}.pth'
+        if val == True:
+            current_model = f'efficientdet-d{compound_coef}_{step}_val.pth'
+        else:
+            current_model = f'efficientdet-d{compound_coef}_{step}.pth'
         model_path = os.path.join(save_dir, current_model)
         torch.save(model.module.model.state_dict(), model_path)
     print('Save best model ...')
     if best_model is None:
-        best_model = f'efficientdet-d{compound_coef}_{step}.pth'
+        if val == True:
+            best_model = f'efficientdet-d{compound_coef}_{step}_val.pth'
+        else:
+            best_model = f'efficientdet-d{compound_coef}_{step}.pth'
         best_loss = current_loss
         save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
     else:
         if current_loss < best_loss:
             old_dir = best_model
             os.remove(os.path.join(save_dir, 'best-' + old_dir))
-            best_model = f'efficientdet-d{compound_coef}_{step}.pth'
+            if val == True:
+                best_model = f'efficientdet-d{compound_coef}_{step}_val.pth'
+            else:
+                best_model = f'efficientdet-d{compound_coef}_{step}.pth'
             best_loss = current_loss
             save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
             print('Checkpoint saved for ', best_model)
