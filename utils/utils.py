@@ -275,3 +275,77 @@ def init_weights(model):
 
             if module.bias is not None:
                 module.bias.data.zero_()
+
+def loss_writer(saved_path, cls_loss_ls, reg_loss_ls, epoch_loss, current_lr, step, epoch, val = False):
+    with open(os.path.join(saved_path, 'loss_log.txt'), 'a+') as f:
+        if val == False:
+            avg_cls_loss = np.mean(cls_loss_ls)
+            avg_reg_loss = np.mean(reg_loss_ls)
+            avg_loss = np.mean(epoch_loss)
+            line = 'Step {:d}: Current Classification Loss:{:4f}; Current Regression Loss:{:4f}; Current Loss:{:4f}; \
+             Average Classification Loss:{:4f}; Average Regression Loss:{:4f}; Average Loss:{:4f}; Current Learning Rate:{:4f}.'\
+                .format(step, cls_loss_ls[-1], reg_loss_ls[-1], epoch_loss[-1], avg_cls_loss, avg_reg_loss, avg_loss, current_lr)
+            print(line)
+            f.write(line + '\n')
+        else:
+            line = '--------------------------------------------After Epoch {}------------------------------------------------\n'.format(epoch) +\
+                   'Step {:d}: Validation Classification Loss:{:4f}; Regression Loss:{:4f}; Total Loss:{:4f}\n'.format(step, cls_loss_ls[0], reg_loss_ls[0], epoch_loss[0]) +\
+                   '----------------------------------------------------------------------------------------------------------'
+            print(line)
+            f.write(line + '\n')
+
+def save_model(model, best_model, current_model, best_loss, current_loss, saved_model_path, step, compound_coef, mode, val = False):
+    save_dir = saved_model_path
+
+    print('Save current model ...')
+    if current_model is not None:
+        model_path = os.path.join(save_dir, current_model)
+        os.remove(model_path)
+
+    if mode == 'obj_det':
+        if val == True:
+            current_model = f'{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
+        else:
+            current_model = f'{mode}_efficientdet-d{compound_coef}_{step}.pth'
+    else:
+        if val == True:
+            current_model = f'{mode}_{step}_val.pth'
+        else:
+            current_model = f'{mode}_{step}.pth'
+
+    model_path = os.path.join(save_dir, current_model)
+    if mode == 'obj_det':
+        torch.save(model.module.model.state_dict(), model_path)
+    else:
+        torch.save(model.state_dict(), model_path)
+
+    print('Save best model ...')
+    if best_model is not None:
+        if current_loss < best_loss:
+            old_dir = best_model
+            os.remove(os.path.join(save_dir, 'best-' + old_dir))
+    if mode == 'obj_det':
+        if val == True:
+            best_model = f'{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
+        else:
+            best_model = f'{mode}_efficientdet-d{compound_coef}_{step}.pth'
+    else:
+        if val == True:
+            best_model = f'{mode}_{step}_val.pth'
+        else:
+            best_model = f'{mode}_{step}.pth'
+
+    best_loss = current_loss
+    if mode == 'obj_det':
+        save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
+    else:
+        save_with_epoch(model.state_dict(), save_dir, best_model, True)
+
+
+    return best_model, best_loss, current_model
+
+
+def save_with_epoch(model, save_dir, run_name, best_model = False):
+    best_prefix = 'best-' if best_model else ''
+    model_dir = os.path.join(save_dir, best_prefix + run_name)
+    torch.save(model, model_dir)
