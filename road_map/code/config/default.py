@@ -4,7 +4,7 @@
 # Licensed under the MIT License.
 # Written by Ke Sun (sunk@mail.ustc.edu.cn)
 # ------------------------------------------------------------------------------
-
+### modified by Jing Qian(jq689@nyu.edu)
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -107,7 +107,7 @@ _C.DEBUG.SAVE_HEATMAPS_PRED = False
 def update_config(cfg):
     cfg.defrost()
     
-    cfg.merge_from_file('/Users/qianjing/Downloads/road_map/code/scratch.yml')
+    cfg.merge_from_file('scratch.yml')
     #cfg.merge_from_list(args.opts)
 
     cfg.freeze()
