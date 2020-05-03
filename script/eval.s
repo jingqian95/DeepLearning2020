@@ -7,4 +7,4 @@
 #SBATCH --gres=gpu:0
 
 cd ../
-python evaluate.py --weights 'saved/dl2020/dl2020_0430-162145_coef0/model/best-efficientdet-d0_11970_val.pth' -th 0.05 --nms_threshold 0.1
+python evaluate.py -c 1 --weights 'saved/dl2020/dl2020_0501-220326_coef1/model/best-efficientdet-d1_25506_val.pth' -th 0.05 --nms_threshold 0.5
