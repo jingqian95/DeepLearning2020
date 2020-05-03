@@ -151,12 +151,12 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
 
-        img = self.load_image(index)
+        imgs, img = self.load_image(index)
         # print('image done')
         annot = self.load_annotations(index)
         # print('annotation done')
         roadimage = self.load_roadimage(index)
-        sample = {'img': img, 'annot': annot}
+        sample = {'img': img, 'annot': annot, 'stacked_imgs': imgs, 'roadimage': roadimage}
 
         if self.transform:
             sample = self.transform(sample)
@@ -206,9 +206,9 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
         image_cat = cv2.cvtColor(image_cat, cv2.COLOR_BGR2RGB)
         image_cat_2 = cv2.cvtColor(image_cat_2, cv2.COLOR_BGR2RGB)
-        print('image_size: {}'.format(image_cat_2.shape))
+        # print('image_size: {}'.format(image_cat_2.shape))
 
-        return image_cat_2.astype(np.float32) / 255.
+        return image_tensor， image_cat_2.astype(np.float32) / 255.
 
 
 
@@ -268,6 +268,8 @@ def collater(data):
     imgs = [s['img'] for s in data]
     annots = [s['annot'] for s in data]
     scales = [s['scale'] for s in data]
+    stacked = [s['stacked_imgs'] for s in data]
+    roadimage = [s['roadimage'] for s in data]
 
     imgs = torch.from_numpy(np.stack(imgs, axis=0))
 
@@ -285,8 +287,10 @@ def collater(data):
         annot_padded = torch.ones((len(annots), 1, 5)) * -1
 
     imgs = imgs.permute(0, 3, 1, 2)
+    stacked = torch.from_numpy(np.stack(stacked, axis=0))
+    stacked = stacked.permute(0, 1, 4, 2, 3)
 
-    return {'img': imgs, 'annot': annot_padded, 'scale': scales}
+    return {'img': imgs, 'annot': annot_padded, 'scale': scales, 'stacked_imgs': stacked, 'roadimage': roadimage}
 
 #
 class Resizer(object):
@@ -296,7 +300,7 @@ class Resizer(object):
         self.img_size = img_size
 
     def __call__(self, sample):
-        image, annots = sample['img'], sample['annot']
+        image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
         height, width, _ = image.shape
         if height > width:
             scale = self.img_size / height
@@ -317,36 +321,7 @@ class Resizer(object):
         # print('After Resizer annotations(106,0) shape: {}\nValue'.format(torch.from_numpy(annots).shape))
         # print(torch.from_numpy(annots)[:5])
 
-        return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annots), 'scale': scale}
-
-# class Resizer(object):
-#     """Convert ndarrays in sample to Tensors."""
-#
-#     def __init__(self, img_size=512):
-#         self.img_size = img_size
-#
-#     def __call__(self, sample):
-#         image = sample
-#         height, width, _ = image.shape
-#         if height > width:
-#             scale = self.img_size / height
-#             resized_height = self.img_size
-#             resized_width = int(width * scale)
-#         else:
-#             scale = self.img_size / width
-#             resized_height = int(height * scale)
-#             resized_width = self.img_size
-#
-#         image = cv2.resize(image, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR)
-#
-#         new_image = np.zeros((self.img_size, self.img_size, 3))
-#         new_image[0:resized_height, 0:resized_width] = image
-#
-#         annots[:, :4] *= scale
-#
-#         # print(image.shape)
-#         return image
-
+        return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annots), 'scale': scale, 'stacked_imgs': imgs, 'roadimage': roadimage}
 
 
 class Augmenter(object):
@@ -354,7 +329,7 @@ class Augmenter(object):
 
     def __call__(self, sample, flip_x=0.5):
         if np.random.rand() < flip_x:
-            image, annots = sample['img'], sample['annot']
+            image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
             image = image[:, ::-1, :]
 
             rows, cols, channels = image.shape
@@ -371,7 +346,7 @@ class Augmenter(object):
             # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(annots.shape))
             # print(annots[:5])
 
-            sample = {'img': image, 'annot': annots}
+            sample = {'img': image, 'annot': annots, 'stacked_imgs': imgs, 'roadimage': roadimage}
         # else:
             # print('----------------------------Augmenter_False---------------------------------')
             # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
@@ -381,28 +356,6 @@ class Augmenter(object):
 
 
 
-# class Augmenter(object):
-#     """Convert ndarrays in sample to Tensors."""
-#
-#     def __call__(self, sample, flip_x=0.5):
-#         if np.random.rand() < flip_x:
-#             image = sample
-#             image = image[:, ::-1, :]
-#
-#             rows, cols, channels = image.shape
-#
-#             # x1 = annots[:, 0].copy()
-#             # x2 = annots[:, 2].copy()
-#             #
-#             # x_tmp = x1.copy()
-#             #
-#             # annots[:, 0] = cols - x2
-#             # annots[:, 2] = cols - x_tmp
-#
-#             sample = image
-#
-#         return sample
-
 class Normalizer(object):
 
     def __init__(self, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
@@ -410,20 +363,9 @@ class Normalizer(object):
         self.std = np.array([[std]])
 
     def __call__(self, sample):
-        image, annots = sample['img'], sample['annot']
+        image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
         # print('----------------------------Normalizer---------------------------------')
         # print('After Normalizer annotations(106,0) shape: {}\nValue'.format(annots.shape))
         # print(annots[:5])
-        return {'img': ((image.astype(np.float32) - self.mean) / self.std), 'annot': annots}
+        return {'img': ((image.astype(np.float32) - self.mean) / self.std), 'annot': annots, 'stacked_imgs': imgs, 'roadimage': roadimage}
 
-
-# class Normalizer(object):
-#
-#     def __init__(self, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
-#         self.mean = np.array([[mean]])
-#         self.std = np.array([[std]])
-#
-#     def __call__(self, sample):
-#         image = sample
-#
-#         return (image - self.mean) / self.std
