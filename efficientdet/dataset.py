@@ -208,7 +208,7 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         image_cat_2 = cv2.cvtColor(image_cat_2, cv2.COLOR_BGR2RGB)
         # print('image_size: {}'.format(image_cat_2.shape))
 
-        return image_tensor， image_cat_2.astype(np.float32) / 255.
+        return image_tensor, image_cat_2.astype(np.float32) / 255.
 
 
 
