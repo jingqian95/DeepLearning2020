@@ -88,7 +88,7 @@ with torch.no_grad():
         sample, target, road_image = data
         # sample = sample.cuda()
         predicted_road_map = model_loader.get_binary_road_map(sample).cpu()
-        ts_road_map = compute_ts_road_map(predicted_road_map.float(), road_image.float())
+        ts_road_map = compute_ts_road_map(predicted_road_map, road_image)
         total_ts_road_map += ts_road_map
         if True: #opt.verbose:
             print(f'{i} - Road Map Score: {ts_road_map:.4}')
