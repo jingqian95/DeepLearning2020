@@ -10,7 +10,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 
-from efficientdet.utils import convert_map_to_lane_map, convert_map_to_road_map
+from efficientdet.utils import convert_map_to_lane_map, convert_map_to_road_map, BEV, bev_overview
 
 from torch.utils.data import Dataset, DataLoader
 
@@ -151,12 +151,12 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
 
-        imgs, img = self.load_image(index)
+        bev_img, img = self.load_image(index)
         # print('image done')
-        annot = self.load_annotations(index)
+        annot, bev_annot = self.load_annotations(index)
         # print('annotation done')
         roadimage = self.load_roadimage(index)
-        sample = {'img': img, 'annot': annot, 'stacked_imgs': imgs, 'roadimage': roadimage}
+        sample = {'img': img, 'annot': annot, 'bev_img': bev_img, 'bev_annot': bev_annot, 'roadimage': roadimage}
 
         if self.transform:
             sample = self.transform(sample)
@@ -199,16 +199,22 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
 
         image_cat_2 = np.concatenate((image_back, image_front), axis=1)
-        image_cat = np.concatenate((image_front, image_back), axis=0)
-
+        
+        image_set = [images[i].numpy().transpose(1, 2, 0) for i in range(len(images))]
+        
+        bev_img = bev_overview(image_set)
 
         image_tensor = torch.stack(images)
 
-        image_cat = cv2.cvtColor(image_cat, cv2.COLOR_BGR2RGB)
+        # print(image_cat_2.shape, bev_img.shape)
+
+        # print(bev_img[100][40:400])
+
+        bev_img = cv2.cvtColor(bev_img.astype(np.float32)*255, cv2.COLOR_BGR2RGB)
         image_cat_2 = cv2.cvtColor(image_cat_2, cv2.COLOR_BGR2RGB)
         # print('image_size: {}'.format(image_cat_2.shape))
 
-        return image_tensor, image_cat_2.astype(np.float32) / 255.
+        return bev_img.astype(np.float32)/255, image_cat_2.astype(np.float32) / 255.
 
 
 
@@ -225,10 +231,15 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         for idx, a in data_entries.iterrows():
 
             annotation = np.zeros((1, 5))
+            bev_annotation = np.zeros((1, 5))
+            
             annotation[0, :4] = a['scaled_x'], a['scaled_y'], a['scaled_box_width'], a['scaled_box_height']
+            bev_annotation[0, :4] = a['bev_x'], a['bev_y'], a['bev_box_width'], a['bev_box_height']
             # annotation[0, :4] = (a['center_x']+40)*768/80, (a['center_y']+40)*612/80, a['box_width']*768/80, a['box_height']*612/80
             annotation[0, 4] = self.coco_label_to_label(a['category_id'])
             annotations = np.append(annotations, annotation, axis=0)
+            bev_annotation[0, 4] = self.coco_label_to_label(a['category_id'])
+            bev_annotation = np.append(bev_annotation, bev_annotation, axis=0)
 
         # print('----------------------------After input---------------------------------')
         # print('After input annotations(106,0) shape: {}\nValue'.format(annotations.shape))
@@ -237,12 +248,14 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         # transform from [x, y, w, h] to [x1, y1, x2, y2]
         annotations[:, 2] = annotations[:, 0] + annotations[:, 2]
         annotations[:, 3] = annotations[:, 1] + annotations[:, 3]
+        bev_annotation[:, 2] = bev_annotation[:, 0] + bev_annotation[:, 2]
+        bev_annotation[:, 3] = bev_annotation[:, 1] + bev_annotation[:, 3]
 
         # print('----------------------------After transform---------------------------------')
         # print('After transform annotations(106,0) shape: {}\nValue'.format(annotations.shape))
         # print(annotations[:5])
 
-        return annotations
+        return annotations, bev_annotation
 
     def load_roadimage(self, image_index):
         # get road image
@@ -266,31 +279,48 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
 def collater(data):
     imgs = [s['img'] for s in data]
-    annots = [s['annot'] for s in data]
+    annot = [s['annot'] for s in data]
     scales = [s['scale'] for s in data]
-    stacked = [s['stacked_imgs'] for s in data]
+    bev_imgs = [s['bev_img'] for s in data]
+    bev_annot = [s['bev_annot'] for s in data]
+    bev_scales = [s['bev_scale'] for s in data]
     roadimage = [s['roadimage'] for s in data]
 
     imgs = torch.from_numpy(np.stack(imgs, axis=0))
+    bev_imgs = torch.from_numpy(np.stack(bev_imgs, axis=0))
 
-    max_num_annots = max(annot.shape[0] for annot in annots)
+    max_num_annot = max(annot.shape[0] for annot in annot)
+    bev_max_num_annot = max(bev_annot.shape[0] for bev_annot in bev_annot)
 
-    if max_num_annots > 0:
+    if max_num_annot > 0:
 
-        annot_padded = torch.ones((len(annots), max_num_annots, 5)) * -1
+        annot_padded = torch.ones((len(annot), max_num_annot, 5)) * -1
 
-        if max_num_annots > 0:
-            for idx, annot in enumerate(annots):
+        if max_num_annot > 0:
+            for idx, annot in enumerate(annot):
                 if annot.shape[0] > 0:
                     annot_padded[idx, :annot.shape[0], :] = annot
     else:
-        annot_padded = torch.ones((len(annots), 1, 5)) * -1
+        annot_padded = torch.ones((len(annot), 1, 5)) * -1
+        
+    if bev_max_num_annot > 0:
+
+        bev_annot_padded = torch.ones((len(bev_annot), bev_max_num_annot, 5)) * -1
+
+        if bev_max_num_annot > 0:
+            for bev_idx, bev_annot in enumerate(bev_annot):
+                if bev_annot.shape[0] > 0:
+                    bev_annot_padded[bev_idx, :bev_annot.shape[0], :] = bev_annot
+    else:
+        bev_annot_padded = torch.ones((len(bev_annot), 1, 5)) * -1
+        
 
     imgs = imgs.permute(0, 3, 1, 2)
-    stacked = torch.from_numpy(np.stack(stacked, axis=0))
-    stacked = stacked.permute(0, 1, 4, 2, 3)
+    bev_imgs = bev_imgs.permute(0, 3, 1, 2)
 
-    return {'img': imgs, 'annot': annot_padded, 'scale': scales, 'stacked_imgs': stacked, 'roadimage': roadimage}
+    return {'img': imgs, 'annot': annot_padded, 'scale': scales,\
+            'bev_img': bev_imgs, 'bev_annot': bev_annot_padded, 'bev_scale': bev_scales,\
+            'roadimage': roadimage}
 
 #
 class Resizer(object):
@@ -300,8 +330,11 @@ class Resizer(object):
         self.img_size = img_size
 
     def __call__(self, sample):
-        image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
+        image, annot, bev, bev_annot, roadimage = sample['img'], sample['annot'], sample['bev_img'],\
+                sample['bev_annot'],sample['roadimage']
         height, width, _ = image.shape
+        b_height, b_width, _ = bev.shape
+        
         if height > width:
             scale = self.img_size / height
             resized_height = self.img_size
@@ -310,18 +343,36 @@ class Resizer(object):
             scale = self.img_size / width
             resized_height = int(height * scale)
             resized_width = self.img_size
+            
+        if b_height > b_width:
+            b_scale = self.img_size / b_height
+            b_resized_height = self.img_size
+            b_resized_width = int(b_width * b_scale)
+        else:
+            b_scale = self.img_size / b_width
+            b_resized_height = int(b_height * b_scale)
+            b_resized_width = self.img_size
 
         image = cv2.resize(image, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR)
+        bev = cv2.resize(bev, (b_resized_width, b_resized_height), interpolation=cv2.INTER_LINEAR)
 
         new_image = np.zeros((self.img_size, self.img_size, 3))
         new_image[0:resized_height, 0:resized_width] = image
+        
+        b_new_image = np.zeros((self.img_size, self.img_size, 3))
+        b_new_image[0:b_resized_height, 0:b_resized_width] = bev
 
-        annots[:, :4] *= scale
+        annot[:, :4] *= scale
+        bev_annot[:, :4] *= b_scale
         # print('----------------------------Resizer---------------------------------')
         # print('After Resizer annotations(106,0) shape: {}\nValue'.format(torch.from_numpy(annots).shape))
         # print(torch.from_numpy(annots)[:5])
 
-        return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annots), 'scale': scale, 'stacked_imgs': imgs, 'roadimage': roadimage}
+        return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annot),\
+                'bev_img': torch.from_numpy(b_new_image).to(torch.float32), 'bev_annot': torch.from_numpy(bev_annot),\
+                'scale': scale, 'bev_scale': b_scale, 'roadimage': roadimage}
+    
+    
 
 
 class Augmenter(object):
@@ -329,24 +380,34 @@ class Augmenter(object):
 
     def __call__(self, sample, flip_x=0.5):
         if np.random.rand() < flip_x:
-            image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
+            image, annot, bev, bev_annot, roadimage = sample['img'], sample['annot'], sample['bev_img'],\
+                sample['bev_annot'],sample['roadimage']
             image = image[:, ::-1, :]
+            bev = bev[:, ::-1, :]
 
             rows, cols, channels = image.shape
-
-            x1 = annots[:, 0].copy()
-            x2 = annots[:, 2].copy()
+            b_rows, b_cols, b_channels = bev.shape
+            
+            x1 = annot[:, 0].copy()
+            x2 = annot[:, 2].copy()
+            
+            b_x1 = bev_annot[:, 0].copy()
+            b_x2 = bev_annot[:, 2].copy()
 
             x_tmp = x1.copy()
+            b_x_tmp = b_x1.copy()
 
-            annots[:, 0] = cols - x2
-            annots[:, 2] = cols - x_tmp
+            annot[:, 0] = cols - x2
+            annot[:, 2] = cols - x_tmp
+            
+            bev_annot[:, 0] = b_cols - b_x2
+            bev_annot[:, 2] = b_cols - b_x_tmp
 
             # print('----------------------------Augmenter_True---------------------------------')
-            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(annots.shape))
-            # print(annots[:5])
+            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(annot.shape))
+            # print(annot[:5])
 
-            sample = {'img': image, 'annot': annots, 'stacked_imgs': imgs, 'roadimage': roadimage}
+            sample = {'img': image, 'annot': annot, 'bev_img': bev, 'bev_annot': bev_annot, 'roadimage': roadimage}
         # else:
             # print('----------------------------Augmenter_False---------------------------------')
             # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
@@ -363,9 +424,19 @@ class Normalizer(object):
         self.std = np.array([[std]])
 
     def __call__(self, sample):
-        image, annots, imgs, roadimage = sample['img'], sample['annot'], sample['stacked_imgs'], sample['roadimage']
-        # print('----------------------------Normalizer---------------------------------')
-        # print('After Normalizer annotations(106,0) shape: {}\nValue'.format(annots.shape))
-        # print(annots[:5])
-        return {'img': ((image.astype(np.float32) - self.mean) / self.std), 'annot': annots, 'stacked_imgs': imgs, 'roadimage': roadimage}
+        image, annot, bev, bev_annot, roadimage = sample['img'], sample['annot'], sample['bev_img'],\
+                sample['bev_annot'],sample['roadimage']
+        
+        return {'img': ((image.astype(np.float32) - self.mean) / self.std), 'annot': annot, \
+                'bev_img': ((bev.astype(np.float32) - self.mean) / self.std), 'bev_annot': bev_annot,\
+                'roadimage': roadimage}
+    
+    
+    
+    
+    
+    
+    
+    
+    
 

@@ -5,6 +5,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 
+import math
+import cv2
+import random
+import pandas as pd
+
+
 
 def convert_map_to_lane_map(ego_map, binary_lane):
     mask = (ego_map[0, :, :] == ego_map[1, :, :]) * (ego_map[1, :, :] == ego_map[2, :, :]) + (
@@ -186,3 +192,96 @@ class Anchors(nn.Module):
         self.last_anchors[image.device] = anchor_boxes
         # print('anchor_boxes shape after squeeze: {}'.format(anchor_boxes.shape))
         return anchor_boxes
+    
+    
+    
+class BEV:
+    
+    def __init__(self, image):
+    
+        self.image = image
+        self.angle = [-30, -90, -150, 30, 90, 150]
+        self.dst_h,self.dst_w = 400,560
+        
+    def bev_transform(self, x1=271, x2=289, crop_h = 140, dst_h=400, dst_w = 560):
+        '''
+        dst_h: destination image height
+        dst_w: destination image height
+        crop_h: crop height for ROI
+        x1,x2: destination image correspongding points
+        '''
+        image = self.image
+        
+        H,W = image.shape[:2]
+
+        #source image points
+        src = np.float32([[0, H], [W, H], [0, 0], [W, 0]]) 
+        #corresponding points in destination image
+        dst = np.float32([[x1, self.dst_h], [x2, dst_h], [0, 0], [dst_w, 0]])
+        M = cv2.getPerspectiveTransform(src, dst) # The transformation matrix
+
+        image = image[crop_h:H, 0:W] # Apply np slicing for ROI crop
+
+        self.warped = cv2.warpPerspective(image, M, (dst_w, dst_h)) # Image warping: transform to bird eye view
+        img = self.warped
+        n_h,n_w = img.shape[:2]
+        mask = np.zeros(img.shape[:2], dtype=np.uint8)       
+        points = np.array([[[x1+10, n_h], [x2-10, n_h], 
+                            [515,0],[55, 0]]]) #make 60 degree angle crop
+
+        # points = np.array([[[lower_left_x,lower_left_y],[lower_right_x,lower_right_y],
+        #                   [upper_left_x,upper_left_y],[upper_right_x,upper_right_y]]])
+
+        cv2.drawContours(mask, [points], -1, (255, 255, 255), -1, cv2.LINE_AA)
+        self.warped_img = cv2.bitwise_and(img,img,mask = mask)
+        
+        return self.warped_img
+    
+    def whole_view(self, c_x=465, c_y = 465):
+        
+        warped_img = self.warped_img
+        h,w = warped_img.shape[:2]
+        self.whole_img = np.zeros((c_y*2,c_x*2,3))
+        self.whole_img[c_y-h:c_x,c_y-w//2:c_y+w//2] = warped_img
+        
+        return self.whole_img
+    
+    def rotateImage(self, angle):
+        image = self.whole_img
+        dst_image = image.copy()
+        (h, w) = image.shape[:2]
+        (c_x, c_y) = (w // 2, h // 2)
+
+        transl = np.array((2, 3))
+
+        rotation_matrix = cv2.getRotationMatrix2D((c_x, c_y), angle, 1.0 )
+        img_rotation = cv2.warpAffine(image, rotation_matrix, (w,h)) 
+
+        return img_rotation
+
+
+    
+    
+
+    
+    
+def bev_overview(image_list):
+    for i,img in enumerate(image_list):
+        bev = BEV(img)
+        warped_img = bev.bev_transform() # transform single image to bev
+        whole_img = bev.whole_view() # put bev segment into whole view
+        rotated_img = bev.rotateImage(bev.angle[i]) # rotate by corresponding camera angle
+        if i == 0:
+            bev_img = rotated_img
+        else:
+            bev_img += rotated_img
+    m,n = 400,400
+    h,w = bev_img.shape[:2]
+    cut_h,cut_w = (h-2*m)//2,(w-2*n)//2
+    bev_img = bev_img[cut_h:cut_h+2*m,cut_w:cut_w+2*n]
+    return bev_img
+
+    
+    
+    
+
