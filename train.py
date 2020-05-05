@@ -50,7 +50,7 @@ def get_args():
     parser.add_argument('--head_only', type=bool, default=False,
                         help='whether finetunes only the regressor and the classifier, '
                              'useful in early stage convergence or small/easy dataset')
-    parser.add_argument('--mode', type=str, default='obj_det', help = 'Options: obj_det, roadimage')
+    parser.add_argument('--mode', type=str, default='bev', help = 'Options: bev, ori')
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--optim', type=str, default='adamw', help='select optimizer for training, '
                                                                    'suggest using \'admaw\' until the'
@@ -65,7 +65,7 @@ def get_args():
     parser.add_argument('--es_patience', type=int, default=0,
                         help='Early stopping\'s parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.')
     parser.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
-    parser.add_argument('--annotation', type=str, default='annotation_newfeat_2.csv', help='annotation csv file name')
+    parser.add_argument('--annotation', type=str, default='annotation_newfeat_3.csv', help='annotation csv file name')
     # parser.add_argument('--log_path', type=str, default='saved/')
     parser.add_argument('--load_weights', type=str, default=None,
                         help='whether to load weights from a checkpoint, set None to initialize, set \'last\' to load last checkpoint')
@@ -291,9 +291,12 @@ def train(opt):
                     continue
 
                 try:
-
-                    imgs = data['bev_img']
-                    annot = data['bev_annot']
+                    if opt.mode == 'bev':
+                        imgs = data['bev_img']
+                        annot = data['bev_annot']
+                    else:
+                        imgs = data['img']
+                        annot = data['annot']
 
                     # sample_cat, sample, target, road_image, extra = data
 
@@ -369,8 +372,13 @@ def train(opt):
                     loss_classification_ls = []
                     for iter, data in enumerate(val_generator):
                         with torch.no_grad():
-                            imgs = data['bev_img']
-                            annot = data['bev_annot']
+
+                            if opt.mode == 'bev':
+                                imgs = data['bev_img']
+                                annot = data['bev_annot']
+                            else:
+                                imgs = data['img']
+                                annot = data['annot']
 
                             if params.num_gpus == 1:
                                 imgs = imgs.cuda()

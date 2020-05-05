@@ -37,6 +37,7 @@ ap.add_argument('--device', type=int, default=0)
 ap.add_argument('--float16', type=bool, default=False)
 ap.add_argument('--data_path', type=str, default='datasets/', help='the root folder of dataset')
 ap.add_argument('--annotation', type=str, default='annotation_newfeat_2.csv', help='annotation csv file name')
+ap.add_argument('--mode', type=str, default='bev', help='bev or ori')
 
 args = ap.parse_args()
 
@@ -59,7 +60,7 @@ input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
 NUM_SAMPLE_PER_SCENE = 126
 
 
-def evaluate_dl(folder_path, val_index, model, csv_name, threshold=0.05):
+def evaluate_dl(folder_path, val_index, model, csv_name, mode, threshold=0.05):
     results = pd.DataFrame({'scene_id': [],
                             'sample_id': [],
                             'category_id': [],
@@ -72,7 +73,7 @@ def evaluate_dl(folder_path, val_index, model, csv_name, threshold=0.05):
     # use to clip the boxes to 0, width/height
     clipBoxes = ClipBoxes()
 
-    ori_imgs, framed_imgs, framed_metas = preprocess_dl(folder_path, val_index, max_size=input_sizes[compound_coef])
+    ori_imgs, framed_imgs, framed_metas = preprocess_dl(folder_path, val_index, mode, max_size=input_sizes[compound_coef])
 
     for index in range(len(ori_imgs)):
         scene_id = val_index[0] + index // NUM_SAMPLE_PER_SCENE
@@ -175,7 +176,8 @@ if __name__ == '__main__':
                 model.half()
 
         # Run main evaluation
-        result_df = evaluate_dl(folder_path, val_index, model, csv_name, args.threshold)
+        result_df = evaluate_dl(folder_path, val_index, model, csv_name, args.mode, args.threshold)
+        print('CSV file created.')
 
 #         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
 #     else:

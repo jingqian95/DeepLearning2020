@@ -10,8 +10,11 @@ from torch import nn
 from torchvision.ops import nms
 from typing import Union
 import uuid
+import torchvision
 
 from utils.sync_batchnorm import SynchronizedBatchNorm2d
+
+from efficientdet.utils import BEV, bev_overview
 
 image_names = [
     'CAM_FRONT_LEFT.jpeg',
@@ -82,7 +85,7 @@ def preprocess(*image_path, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225
     return ori_imgs, framed_imgs, framed_metas
 
 
-def preprocess_dl(folder_path, val_index, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
+def preprocess_dl(folder_path, val_index, mode = 'bev', max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
     # Load original images in a list
     ori_imgs = []
     for scene_index in val_index:
@@ -92,14 +95,14 @@ def preprocess_dl(folder_path, val_index, max_size=512, mean=(0.406, 0.456, 0.48
 
             image_front = []
             image_back = []
-            #             images = []
+            images = []
 
             for i in range(6):
                 image_path = os.path.join(sample_path, image_names[i])
                 image = cv2.imread(image_path)
 
-                #                 transform_dl = torchvision.transforms.ToTensor()
-                #                 images.append(transform_dl(image))
+                transform_dl = torchvision.transforms.ToTensor()
+                images.append(transform_dl(image))
 
                 if i <= 2:
                     if len(image_front) < 1:
@@ -113,8 +116,14 @@ def preprocess_dl(folder_path, val_index, max_size=512, mean=(0.406, 0.456, 0.48
                         image_back = np.concatenate((image_back, image), axis=0)
 
             image_cat_2 = np.concatenate((image_back, image_front), axis=1)
-            #             image_cat = np.concatenate((image_front, image_back), axis=0)
-            ori_imgs.append(image_cat_2)
+            image_set = [images[i].numpy().transpose(1, 2, 0) for i in range(len(images))]
+            bev_img = bev_overview(image_set)
+
+            if mode == 'bev':
+                ori_imgs.append(bev_img.astype(np.float32)*255)
+            else:
+                ori_imgs.append(image_cat_2)
+
 
     #     ori_imgs = [cv2.imread(img_path) for img_path in image_path]
 
@@ -302,44 +311,30 @@ def save_model(model, best_model, current_model, best_loss, current_loss, saved_
         model_path = os.path.join(save_dir, current_model)
         os.remove(model_path)
 
-    if mode == 'obj_det':
-        if val == True:
-            current_model = f'{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
-        else:
-            current_model = f'{mode}_efficientdet-d{compound_coef}_{step}.pth'
+    if val == True:
+        current_model = f'{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
     else:
-        if val == True:
-            current_model = f'{mode}_{step}_val.pth'
-        else:
-            current_model = f'{mode}_{step}.pth'
+        current_model = f'{mode}_efficientdet-d{compound_coef}_{step}.pth'
 
     model_path = os.path.join(save_dir, current_model)
-    if mode == 'obj_det':
-        torch.save(model.module.model.state_dict(), model_path)
-    else:
-        torch.save(model.state_dict(), model_path)
+    torch.save(model.module.model.state_dict(), model_path)
+
 
     print('Save best model ...')
     if best_model is not None:
         if current_loss < best_loss:
             old_dir = best_model
-            os.remove(os.path.join(save_dir, 'best-' + old_dir))
-    if mode == 'obj_det':
-        if val == True:
-            best_model = f'{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
-        else:
-            best_model = f'{mode}_efficientdet-d{compound_coef}_{step}.pth'
+            os.remove(os.path.join(save_dir, old_dir))
+    if val == True:
+        best_model = f'best-{mode}_efficientdet-d{compound_coef}_{step}_val.pth'
     else:
-        if val == True:
-            best_model = f'{mode}_{step}_val.pth'
-        else:
-            best_model = f'{mode}_{step}.pth'
+        best_model = f'best-{mode}_efficientdet-d{compound_coef}_{step}.pth'
+
 
     best_loss = current_loss
-    if mode == 'obj_det':
-        save_with_epoch(model.module.model.state_dict(), save_dir, best_model, True)
-    else:
-        save_with_epoch(model.state_dict(), save_dir, best_model, True)
+    model_path = os.path.join(save_dir, best_model)
+    torch.save(model.module.model.state_dict(), model_path)
+
 
 
     return best_model, best_loss, current_model
