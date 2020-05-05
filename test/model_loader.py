@@ -40,11 +40,11 @@ def get_transform_task2():
 
 class ModelLoader():
     # Fill the information for your team
-    team_name = 'team_name'
-    team_number = 1
-    round_number = 1
-    team_member = []
-    contact_email = '@nyu.edu'
+    team_name = 'Thief Vegetable'
+    team_number = 11
+    round_number = 2
+    team_member = ['mj1477','jq689','yz5336']
+    contact_email = 'jq689@nyu.edu'
 
     def __init__(self, model_file=['weights/best-efficientdet-d2_21909_val.pth','weights/lr5_epoch20_final.pt']):
         # You should 
@@ -52,7 +52,7 @@ class ModelLoader():
         #       2. load your state_dict
         #       3. call cuda()
         # self.model = ...
-        self.device = 'cpu'
+        self.device = 'cuda'
         self.obj_det_weight = model_file[0]
         project_name = 'dl2020'
         params = yaml.safe_load(open(f'projects/{project_name}.yml'))
@@ -74,15 +74,10 @@ class ModelLoader():
         
         #print("path is ",self.RoadMap_model_path)
 
-
-
-
-
-
         self.RoadMap_model_path = model_file[-1]
         update_config(config)
         self.RoadMap_model = get_seg_model(config)
-        self.RoadMap_model.load_state_dict(torch.load(self.RoadMap_model_path, map_location=torch.device(self.device)))
+        self.RoadMap_model.load_state_dict(torch.load(self.RoadMap_model_path))
         self.RoadMap_model = self.RoadMap_model.to(self.device)
 
     def get_bounding_boxes(self, samples):
@@ -98,11 +93,11 @@ class ModelLoader():
         regressBoxes = BBoxTransform()
         # use to clip the boxes to 0, width/height
         clipBoxes = ClipBoxes()
-
+        samples = samples.cpu()
         ori_sample, framed_img, framed_meta = preprocess_test(samples, max_size = self.input_sizes[self.compound_coef])
 
         sample = torch.from_numpy(framed_img)
-#         sample = sample.cuda()
+        sample = sample.cuda()
         sample = sample.unsqueeze(0).permute(0, 3, 1, 2)
 
 
