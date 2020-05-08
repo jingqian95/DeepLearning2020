@@ -9,8 +9,11 @@ from torch import nn
 from torchvision.ops import nms
 from typing import Union
 import uuid
+import torchvision
 
 from utils.sync_batchnorm import SynchronizedBatchNorm2d
+
+from efficientdet.utils import BEV, bev_overview
 
 def aspectaware_resize_padding(image, width, height, interpolation=None, means=None):
 
@@ -46,17 +49,19 @@ def aspectaware_resize_padding(image, width, height, interpolation=None, means=N
     return [canvas, new_w, new_h, old_w, old_h, padding_w, padding_h]
 
 
-def preprocess_test(sample, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
+def preprocess_test(sample, mode, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
     # Load original images in a list
     ori_imgs = []
-#     print(sample.shape)
     sample = sample.permute(0, 1, 3, 4, 2).numpy()
-#     print(sample.shape)
 
     image_front = []
     image_back = []
+    images = []
 
     for i, image in enumerate(sample[0]):
+        transform_dl = torchvision.transforms.ToTensor()
+        images.append(transform_dl(image))
+            
         if i <= 2:
             if len(image_front) < 1:
                 image_front = image
@@ -67,13 +72,13 @@ def preprocess_test(sample, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225
                 image_back = image
             else:
                 image_back = np.concatenate((image_back, image), axis=0)
-
-    sample = np.concatenate((image_back, image_front), axis=1)
     
-#     sample = (sample / 255 - mean) / std
+    if mode == 'bev':
+        image_set = [images[i].numpy().transpose(1, 2, 0) for i in range(len(images))]
+        sample = bev_overview(image_set)
+    else:
+        sample = np.concatenate((image_back, image_front), axis=1)
     
-#     print(sample.shape)
-
     sample_lst = aspectaware_resize_padding(sample[..., ::-1], max_size, max_size, means=None)
 
     framed_img = sample_lst[0]

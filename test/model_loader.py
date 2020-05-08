@@ -46,13 +46,13 @@ class ModelLoader():
     team_member = ['mj1477','jq689','yz5336']
     contact_email = 'jq689@nyu.edu'
 
-    def __init__(self, model_file=['weights/best-efficientdet-d2_21909_val.pth','weights/lr5_epoch20_final.pt']):
+    def __init__(self, model_file=['weights/bev_efficientdet-d3_20775_val.pth','weights/lr5_epoch20_final.pt']):
         # You should 
         #       1. create the model object
         #       2. load your state_dict
         #       3. call cuda()
         # self.model = ...
-        self.device = 'cuda'
+        self.device = 'cpu'
         self.obj_det_weight = model_file[0]
         project_name = 'dl2020'
         params = yaml.safe_load(open(f'projects/{project_name}.yml'))
@@ -77,7 +77,7 @@ class ModelLoader():
         self.RoadMap_model_path = model_file[-1]
         update_config(config)
         self.RoadMap_model = get_seg_model(config)
-        self.RoadMap_model.load_state_dict(torch.load(self.RoadMap_model_path))
+        self.RoadMap_model.load_state_dict(torch.load(self.RoadMap_model_path, map_location=torch.device(self.device)))
         self.RoadMap_model = self.RoadMap_model.to(self.device)
 
     def get_bounding_boxes(self, samples):
@@ -93,11 +93,11 @@ class ModelLoader():
         regressBoxes = BBoxTransform()
         # use to clip the boxes to 0, width/height
         clipBoxes = ClipBoxes()
-        samples = samples.cpu()
-        ori_sample, framed_img, framed_meta = preprocess_test(samples, max_size = self.input_sizes[self.compound_coef])
+        samples = samples.to(self.device)
+        ori_sample, framed_img, framed_meta = preprocess_test(samples, 'bev', max_size = self.input_sizes[self.compound_coef])
 
         sample = torch.from_numpy(framed_img)
-        sample = sample.cuda()
+        sample = sample.to(self.device)
         sample = sample.unsqueeze(0).permute(0, 3, 1, 2)
 
 
@@ -138,12 +138,12 @@ class ModelLoader():
 
 
         results['x_pred'], results['y_pred'], results['w_pred'], results['h_pred'] = [i[0] for i in results['bbox']], [i[1] for i in results['bbox']], [i[2] for i in results['bbox']], [i[3] for i in results['bbox']]
+        
+        results['box_width'] = results['w_pred']/800*80
+        results['box_height'] = results['h_pred']/800*80
 
-        results['box_width'] = results['w_pred']/612*80
-        results['box_height'] = results['h_pred']/768*80
-
-        results['center_x'] = results['x_pred']/612*80 + results['box_width']/2 - 40
-        results['center_y'] = 40 - results['y_pred']/768*80 - results['box_height']/2
+        results['center_x'] = results['x_pred']/800*80 + results['box_width']/2 - 40
+        results['center_y'] = 40 - results['y_pred']/800*80 - results['box_height']/2
         
 
         pred_corners = np.array([results.center_x + results.box_width/2, results.center_x + results.box_width/2,\

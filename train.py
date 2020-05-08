@@ -16,8 +16,6 @@ import torchvision
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 
-from roadimage.seg_hrnet import get_seg_model
-from roadimage.utils import threat_score
 
 from efficientdet.dataset import LabeledDataset_coco, Resizer, Normalizer, Augmenter, collater
 
