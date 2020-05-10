@@ -49,24 +49,25 @@ class ResNetMultiImageInput(models.ResNet):
                 nn.init.constant_(m.bias, 0)
 
 
-    def resnet_multiimage_input(num_layers, pretrained=False, num_input_images=1):
-        """Constructs a ResNet model.
-        Args:
-            num_layers (int): Number of resnet layers. Must be 18 or 50
-            pretrained (bool): If True, returns a model pre-trained on ImageNet
-            num_input_images (int): Number of frames stacked as input
-        """
-        assert num_layers in [18, 50], "Can only run with 18 or 50 layer resnet"
-        blocks = {18: [2, 2, 2, 2], 50: [3, 4, 6, 3]}[num_layers]
-        block_type = {18: models.resnet.BasicBlock, 50: models.resnet.Bottleneck}[num_layers]
-        model = ResNetMultiImageInput(block_type, blocks, num_input_images=num_input_images)
+def resnet_multiimage_input(num_layers, pretrained=False, num_input_images=1):
+    """Constructs a ResNet model.
+    Args:
+        num_layers (int): Number of resnet layers. Must be 18 or 50
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+        num_input_images (int): Number of frames stacked as input
+    """
+    assert num_layers in [18, 50], "Can only run with 18 or 50 layer resnet"
+    blocks = {18: [2, 2, 2, 2], 50: [3, 4, 6, 3]}[num_layers]
+    block_type = {18: models.resnet.BasicBlock, 50: models.resnet.Bottleneck}[num_layers]
+    model = ResNetMultiImageInput(block_type, blocks, num_input_images=num_input_images)
 
-        if pretrained:
-            loaded = model_zoo.load_url(models.resnet.model_urls['resnet{}'.format(num_layers)])
-            loaded['conv1.weight'] = torch.cat(
-                [loaded['conv1.weight']] * num_input_images, 1) / num_input_images
-            model.load_state_dict(loaded)
-        return model
+    if pretrained:
+        loaded = model_zoo.load_url(models.resnet.model_urls['resnet{}'.format(num_layers)])
+        loaded['conv1.weight'] = torch.cat(
+            [loaded['conv1.weight']] * num_input_images, 1) / num_input_images
+        model.load_state_dict(loaded)
+    return model
+
 
 class ResnetEncoder(nn.Module):
     """Pytorch module for a resnet encoder
