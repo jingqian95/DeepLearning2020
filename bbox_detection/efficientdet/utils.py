@@ -146,51 +146,36 @@ class Anchors(nn.Module):
 
         boxes_all = []
         for stride in self.strides:
-            # print('----------------------------stride---------------------------------')
-            # print('stride: {}'.format(stride))
             boxes_level = []
             for scale, ratio in itertools.product(self.scales, self.ratios):
-                # print('----------------------------acale/ratio---------------------------------')
-                # print('scale: {}, ratio: {}'.format(scale, ratio))
                 if image_shape[1] % stride != 0:
                     raise ValueError('input size must be divided by the stride.')
                 base_anchor_size = self.anchor_scale * stride * scale
-                # print('base_anchor_size: {}'.format(base_anchor_size))
                 anchor_size_x_2 = base_anchor_size * ratio[0] / 2.0
                 anchor_size_y_2 = base_anchor_size * ratio[1] / 2.0
-                # print('anchor_size_x_2: {}'.format(anchor_size_x_2))
-                # print('anchor_size_y_2: {}'.format(anchor_size_y_2))
 
                 x = np.arange(stride / 2, image_shape[1], stride)
                 y = np.arange(stride / 2, image_shape[0], stride)
-                # print('x shape: {}, y shape: {}'.format(x.shape, y.shape))
                 xv, yv = np.meshgrid(x, y)
-                # print('xv shape: {}, yv shape: {}'.format(xv.shape, yv.shape))
                 xv = xv.reshape(-1)
                 yv = yv.reshape(-1)
 
                 # y1,x1,y2,x2
                 boxes = np.vstack((yv - anchor_size_y_2, xv - anchor_size_x_2,
                                    yv + anchor_size_y_2, xv + anchor_size_x_2))
-                # print('boxes shape: {}'.format(boxes.shape))
                 boxes = np.swapaxes(boxes, 0, 1)
-                # print('boxes shape: {}'.format(boxes.shape))
                 boxes_level.append(np.expand_dims(boxes, axis=1))
 
-            # concat anchors on the same level to the reshape NxAx4
             boxes_level = np.concatenate(boxes_level, axis=1)
-            # print('boxes_level shape: {}'.format(boxes_level.shape))
             boxes_all.append(boxes_level.reshape([-1, 4]))
 
         anchor_boxes = np.vstack(boxes_all)
-        # print('anchor_boxes shape before squeeze: {}'.format(anchor_boxes.shape))
 
         anchor_boxes = torch.from_numpy(anchor_boxes.astype(dtype)).to(image.device)
         anchor_boxes = anchor_boxes.unsqueeze(0)
 
         # save it for later use to reduce overhead
         self.last_anchors[image.device] = anchor_boxes
-        # print('anchor_boxes shape after squeeze: {}'.format(anchor_boxes.shape))
         return anchor_boxes
     
     
@@ -229,8 +214,6 @@ class BEV:
         points = np.array([[[x1+10, n_h], [x2-10, n_h], 
                             [515,0],[55, 0]]]) #make 60 degree angle crop
 
-        # points = np.array([[[lower_left_x,lower_left_y],[lower_right_x,lower_right_y],
-        #                   [upper_left_x,upper_left_y],[upper_right_x,upper_right_y]]])
 
         cv2.drawContours(mask, [points], -1, (255, 255, 255), -1, cv2.LINE_AA)
         self.warped_img = cv2.bitwise_and(img,img,mask = mask)

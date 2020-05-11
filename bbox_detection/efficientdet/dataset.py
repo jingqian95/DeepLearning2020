@@ -56,14 +56,7 @@ class LabeledDataset(torch.utils.data.Dataset):
         for image_name in image_names:
             image_path = os.path.join(sample_path, image_name)
             image = Image.open(image_path)
-
-            # transform_dl = torchvision.transforms.ToTensor()
-            # image = transform_dl(image)
-
-            # print(image_name)
-            # print('before transform image shape {}'.format(image.shape))
             image = self.transform(image)
-            # print('after transform image shape {}'.format(image.shape))
             if image_cat == None:
                 image_cat = image
             else:
@@ -101,7 +94,7 @@ class LabeledDataset(torch.utils.data.Dataset):
         else:
             return image_cat, image_tensor, target, road_image
 
-class LabeledDataset_coco(torch.utils.data.Dataset):
+class LabeledDataset_dl(torch.utils.data.Dataset):
     def __init__(self, image_folder, annotation_file, scene_index, transform, extra_info=True):
         """
         Args:
@@ -118,12 +111,6 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         self.transform = transform
         self.extra_info = extra_info
 
-        # self.root_dir = root_dir
-        # self.set_name = set
-        # self.transform = transform
-
-        # self.coco = COCO(os.path.join(self.root_dir, 'annotations', 'instances_' + self.set_name + '.json'))
-        # self.image_ids = self.coco.getImgIds()
 
         self.load_classes()
 
@@ -161,10 +148,6 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         if self.transform:
             sample = self.transform(sample)
 
-        # print(sample['img'].shape, sample['annot'].shape)
-        # print('----------------------------LabeledDataset_coco_output---------------------------------')
-        # print('After LabeledDataset_coco annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
-        # print(sample['annot'][:5])
 
         return sample
 
@@ -206,13 +189,9 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
 
         image_tensor = torch.stack(images)
 
-        # print(image_cat_2.shape, bev_img.shape)
-
-        # print(bev_img[100][40:400])
 
         bev_img = cv2.cvtColor(bev_img.astype(np.float32)*255, cv2.COLOR_BGR2RGB)
         image_cat_2 = cv2.cvtColor(image_cat_2, cv2.COLOR_BGR2RGB)
-        # print('image_size: {}'.format(image_cat_2.shape))
 
         return bev_img.astype(np.float32)/255, image_cat_2.astype(np.float32) / 255.
 
@@ -224,8 +203,6 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         sample_id = image_index % NUM_SAMPLE_PER_SCENE
         data_entries = self.annotation_dataframe[
             (self.annotation_dataframe['scene'] == scene_id) & (self.annotation_dataframe['sample'] == sample_id)]
-        # print(data_entries.shape)
-        # print('----------------------------load_annotations---------------------------------')
         annotations = np.zeros((0, 5))
         # parse annotations
         for idx, a in data_entries.iterrows():
@@ -235,15 +212,11 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
             
             annotation[0, :4] = a['scaled_x'], a['scaled_y'], a['scaled_box_width'], a['scaled_box_height']
             bev_annotation[0, :4] = a['bev_x'], a['bev_y'], a['bev_box_width'], a['bev_box_height']
-            # annotation[0, :4] = (a['center_x']+40)*768/80, (a['center_y']+40)*612/80, a['box_width']*768/80, a['box_height']*612/80
             annotation[0, 4] = self.coco_label_to_label(a['category_id'])
             annotations = np.append(annotations, annotation, axis=0)
             bev_annotation[0, 4] = self.coco_label_to_label(a['category_id'])
             bev_annotation = np.append(bev_annotation, bev_annotation, axis=0)
 
-        # print('----------------------------After input---------------------------------')
-        # print('After input annotations(106,0) shape: {}\nValue'.format(annotations.shape))
-        # print(annotations[:5])
 
         # transform from [x, y, w, h] to [x1, y1, x2, y2]
         annotations[:, 2] = annotations[:, 0] + annotations[:, 2]
@@ -251,9 +224,6 @@ class LabeledDataset_coco(torch.utils.data.Dataset):
         bev_annotation[:, 2] = bev_annotation[:, 0] + bev_annotation[:, 2]
         bev_annotation[:, 3] = bev_annotation[:, 1] + bev_annotation[:, 3]
 
-        # print('----------------------------After transform---------------------------------')
-        # print('After transform annotations(106,0) shape: {}\nValue'.format(annotations.shape))
-        # print(annotations[:5])
 
         return annotations, bev_annotation
 
@@ -364,9 +334,6 @@ class Resizer(object):
 
         annot[:, :4] *= scale
         bev_annot[:, :4] *= b_scale
-        # print('----------------------------Resizer---------------------------------')
-        # print('After Resizer annotations(106,0) shape: {}\nValue'.format(torch.from_numpy(annots).shape))
-        # print(torch.from_numpy(annots)[:5])
 
         return {'img': torch.from_numpy(new_image).to(torch.float32), 'annot': torch.from_numpy(annot),\
                 'bev_img': torch.from_numpy(b_new_image).to(torch.float32), 'bev_annot': torch.from_numpy(bev_annot),\
@@ -403,15 +370,9 @@ class Augmenter(object):
             bev_annot[:, 0] = b_cols - b_x2
             bev_annot[:, 2] = b_cols - b_x_tmp
 
-            # print('----------------------------Augmenter_True---------------------------------')
-            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(annot.shape))
-            # print(annot[:5])
 
             sample = {'img': image, 'annot': annot, 'bev_img': bev, 'bev_annot': bev_annot, 'roadimage': roadimage}
-        # else:
-            # print('----------------------------Augmenter_False---------------------------------')
-            # print('After Augmenter annotations(106,0) shape: {}\nValue'.format(sample['annot'].shape))
-            # print(sample['annot'][:5])
+
 
         return sample
 

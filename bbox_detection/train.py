@@ -17,7 +17,7 @@ import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 
 
-from efficientdet.dataset import LabeledDataset_coco, Resizer, Normalizer, Augmenter, collater
+from efficientdet.dataset import LabeledDataset_dl, Resizer, Normalizer, Augmenter, collater
 
 from backbone import EfficientDetBackbone
 from tensorboardX import SummaryWriter
@@ -129,7 +129,7 @@ def train(opt):
                                     Augmenter(),\
                                     Resizer(input_sizes[opt.compound_coef])])
 
-    training_set = LabeledDataset_coco(image_folder = os.path.join(opt.data_path, params.project_name),
+    training_set = LabeledDataset_dl(image_folder = os.path.join(opt.data_path, params.project_name),
                                       annotation_file = os.path.join(opt.data_path, params.project_name, opt.annotation),
                                       scene_index = train_scene_index,
                                       transform = transform,
@@ -139,7 +139,7 @@ def train(opt):
     training_generator = DataLoader(training_set, **training_params)
 
 
-    val_set = LabeledDataset_coco(image_folder = os.path.join(opt.data_path, params.project_name),
+    val_set = LabeledDataset_dl(image_folder = os.path.join(opt.data_path, params.project_name),
                                       annotation_file = os.path.join(opt.data_path, params.project_name, opt.annotation),
                                       scene_index = val_scene_index,
                                       transform = transform,
@@ -305,8 +305,6 @@ def train(opt):
                         annot = annot.cuda()
 
                     optimizer.zero_grad()
-                    # cls_loss, reg_loss = model(imgs, annot, obj_list=params.obj_list)
-                    # cls_loss, reg_loss = model(sample_cat, target, obj_list=params.obj_list)
                     cls_loss, reg_loss, regression, classification, anchors = model(imgs, annot,\
                                                                                     obj_list=params.obj_list)
                     cls_loss = cls_loss.mean()
@@ -330,14 +328,8 @@ def train(opt):
 
 
 
-
-                    # writer.add_scalars('Loss', {'train': loss}, step)
-                    # writer.add_scalars('Regression_loss', {'train': reg_loss}, step)
-                    # writer.add_scalars('Classfication_loss', {'train': cls_loss}, step)
-
                     # log learning_rate
                     current_lr = optimizer.param_groups[0]['lr']
-                    # writer.add_scalar('learning_rate', current_lr, step)
 
 
                     progress_bar.set_description('Object Detection: Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
@@ -404,13 +396,6 @@ def train(opt):
                     print(
                         'Val. Epoch: {}/{}. Classification loss: {:1.5f}. Regression loss: {:1.5f}. Total loss: {:1.5f}'.format(
                             epoch, opt.num_epochs, cls_loss, reg_loss, loss))
-                    # writer.add_scalars('Total_loss', {'val': loss}, step)
-                    # writer.add_scalars('Regression_loss', {'val': reg_loss}, step)
-                    # writer.add_scalars('Classfication_loss', {'val': cls_loss}, step)
-
-                    # best_model, best_loss, current_model = \
-                    #     save_model(model, best_model, current_model, best_loss, loss, opt.saved_model_path, step,
-                    #                opt.compound_coef)
 
                     loss_writer(opt.saved_path, [cls_loss], [reg_loss], [loss], current_lr, step, epoch, val = True)
 
@@ -425,8 +410,6 @@ def train(opt):
 
     except KeyboardInterrupt:
         save_checkpoint(model, f'errupted_efficientdet-d{opt.compound_coef}_{epoch}_{step}.pth')
-    #     writer.close()
-    # writer.close()
 
 
 def save_checkpoint(model, name):

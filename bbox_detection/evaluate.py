@@ -1,4 +1,6 @@
-# Author: muyangjin
+# original author: Zylo117
+# adapted from https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch
+# modified by muyangjin
 
 """
 Evaluations
@@ -178,8 +180,4 @@ if __name__ == '__main__':
         # Run main evaluation
         result_df = evaluate_dl(folder_path, val_index, model, csv_name, args.mode, args.threshold)
         print('CSV file created.')
-
-#         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
-#     else:
-#         _eval(coco_gt, image_ids, f'{SET_NAME}_bbox_results.json')
 

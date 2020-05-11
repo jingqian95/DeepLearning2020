@@ -8,8 +8,6 @@ from utils.utils import postprocess, invert_affine, display
 
 
 def calc_iou(a, b):
-    # a(anchor) [boxes, (y1, x1, y2, x2)]
-    # b(gt, coco-style) [boxes, (x1, y1, x2, y2)]
 
     area = (b[:, 2] - b[:, 0]) * (b[:, 3] - b[:, 1])
     iw = torch.min(torch.unsqueeze(a[:, 3], dim=1), b[:, 2]) - torch.max(torch.unsqueeze(a[:, 1], 1), b[:, 0])
