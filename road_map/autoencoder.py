@@ -1,3 +1,7 @@
+# original author:  C. Godard, O. Mac Aodha, M. Firman, G. Brostow, Copyright © Niantic, Inc. 2018. 
+# adapted from https://github.com/nianticlabs/monodepth2
+# modified by Jing Qian
+
 from __future__ import absolute_import, division, print_function
 
 import torch
